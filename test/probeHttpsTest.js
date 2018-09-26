@@ -14,6 +14,11 @@ describe('probeHttps', () => {
       app.get('/simulate/ok', (req, res) => {
         res.status(200).send({hello: 'world'});
       });
+      app.get('/simulate/timeout', (req, res) => {
+        setTimeout(() => {
+          res.status(200).send({hello: 'world'});
+        }, 1000);
+      });
       server = https.createServer({
         key: privateKey,
         cert: certificate
@@ -24,22 +29,39 @@ describe('probeHttps', () => {
       server.close();
     });
     
-    it('returns metrics', async () => {
+    it('returns metrics xxx', async () => {
       const metrics = await probeHttps({
         host: 'localhost',
         port: server.address().port,
         path: '/simulate/ok',
-        httpsAgent: new https.Agent({
+        agent: new https.Agent({
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
         })
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
-      delete metrics.socket_dst_ip;
-      delete metrics.socket_family;
       assert.deepEqual({
         res_status: 200,
-        socket_tls_procotol: 'TLSv1.2'
+        socket_tls_procotol: 'TLSv1.2',
+        socket_dst_ip: '127.0.0.1',
+        socket_family: 'IPv4'
+      }, metrics);
+    });
+
+    it('returns metrics for timeout', async () => {
+      const metrics = await probeHttps({
+        host: 'localhost',
+        port: server.address().port,
+        path: '/simulate/timeout',
+        agent: new https.Agent({
+          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
+        }),
+        timeout: 500
+      });
+      assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
+      delete metrics.duration;
+      assert.deepEqual({
+        err_code: 'TIMEOUT',
       }, metrics);
     });
 
@@ -48,7 +70,7 @@ describe('probeHttps', () => {
         host: '127.0.0.1',
         port: server.address().port,
         path: '/simulate/ok',
-        httpsAgent: new https.Agent({
+        agent: new https.Agent({
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
         })
       });
