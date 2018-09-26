@@ -11,21 +11,17 @@ module.exports = async (config) => {
   if (config.agent) {
     options.agent = config.agent;
   }
-  return new Promise((resolvePromise, rejectPromise) => {
+  return new Promise((resolvePromise) => {
     let result = {};
     let timedOut = false;
     const resolve = (value) => {
       clearTimeout(timeout);
       resolvePromise(value);
     };
-    const reject = (value) => {
-      clearTimeout(timeout);
-      rejectPromise(value);
-    };
     const request = http.request(options, (res) => {
       result.socket_family = res.socket.remoteFamily;
       result.socket_dst_ip = res.socket.remoteAddress;
-      res.on('data', (chunk) => {});
+      res.on('data', () => {});
       res.on('end', () => {
         resolve(Object.assign({
           res_status: res.statusCode,
