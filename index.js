@@ -18,7 +18,7 @@ const probeAll = require('./src/probeAll');
 const pushMetrics = require('./src/pushMetrics');
 const loadProbesConfig = require('./src/loadProbesConfig');
 
-setInterval(async () => {
+const run = () => {
   try {
     const probesConfig = await loadProbesConfig(PROBES_CONFIG_URL);
     const metrics = await probeAll(probesConfig);
@@ -39,4 +39,8 @@ setInterval(async () => {
   } catch (e) {
     console.error(e);
   }
+}
+run()
+setInterval(async () => {
+  run()
 }, PROBE_INTERVAL);
