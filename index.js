@@ -9,7 +9,7 @@ const os = require('os');
 
 const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://localhost:9091';
 const PUSHGATEWAY_AUTH = process.env.PUSHGATEWAY_AUTH;
-const PROBES_CONFIG_URL = process.env.PROBES_CONFIG_URL || 'probes.json';
+const PROBES_CONFIG_URL = process.env.PROBES_CONFIG_URL || 'file://./example/probes.json';
 const INSTANCE = process.env.INSTANCE || os.hostname();
 const ENVIRONMENT = process.env.ENVIRONMENT || 'test';
 
