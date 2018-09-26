@@ -11,6 +11,7 @@ const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://localhost:9091';
 const PUSHGATEWAY_AUTH = process.env.PUSHGATEWAY_AUTH;
 const PROBES_CONFIG_URL = process.env.PROBES_CONFIG_URL || 'file://./example/probes.json';
 const INSTANCE = process.env.INSTANCE || os.hostname();
+const INSTANCE_ADDRESS = process.env.INSTANCE_ADDRESS;
 const ENVIRONMENT = process.env.ENVIRONMENT || 'test';
 const PROBE_INTERVAL = parseInt(process.env.PROBE_INTERVAL || '60000');
 
@@ -31,7 +32,8 @@ const run = async () => {
         url: PUSHGATEWAY_URL,
         auth: PUSHGATEWAY_AUTH,
         environment: ENVIRONMENT,
-        instance: INSTANCE
+        instance: INSTANCE,
+        instance_address: INSTANCE_ADDRESS
       }, publishMetrics);  
     } catch (e) {
       console.error('ERROR could not publish metrics', e);

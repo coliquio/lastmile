@@ -42,9 +42,11 @@ describe('probeHttps', () => {
       delete metrics.duration;
       assert.deepEqual({
         res_status: 200,
-        socket_tls_procotol: 'TLSv1.2',
-        socket_dst_ip: '127.0.0.1',
-        socket_family: 'IPv4'
+        socket_dst_family: 'IPv4',
+        socket_dst_address: '127.0.0.1',
+        socket_src_family: 'IPv4',
+        socket_src_address: '127.0.0.1',
+        socket_tls_procotol: 'TLSv1.2'
       }, metrics);
     });
 

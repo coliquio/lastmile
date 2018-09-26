@@ -19,10 +19,11 @@ module.exports = async (config) => {
       resolvePromise(value);
     };
     const request = https.request(options, (res) => {
-      result.socket_family = res.socket.remoteFamily;
-      result.socket_dst_ip = res.socket.remoteAddress;
+      result.socket_dst_family = res.socket.remoteFamily;
+      result.socket_dst_address = res.socket.remoteAddress;
+      result.socket_src_family = res.socket.address().family;
+      result.socket_src_address = res.socket.address().address;
       result.socket_tls_procotol = res.socket.getProtocol();
-      
       res.on('data', () => {});
       res.on('end', () => {
         resolve(Object.assign({

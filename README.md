@@ -12,6 +12,7 @@ This installs to root crontab.
       PROBES_CONFIG_URL=https://raw.githubusercontent.com/coliquio/lastmile/master/example/probes.json \
       ENVIRONMENT=local \
       INSTANCE=lastmile \
+      INSTANCE_ADDRESS=`ip -o -4 address show  | awk 'NR==2 { gsub(/\/.*/, "", $4); printf $4 }'` \
       bash
 
 ## Run Test Environment

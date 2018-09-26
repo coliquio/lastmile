@@ -3,18 +3,18 @@ const promClient = require('prom-client');
 const labelNames = [
   'protocol',
   'socket_tls_protocol',
-  'socket_family',
-  'socket_src_ip',
-  'socket_dst_ip',
+  'socket_src_family',
+  'socket_src_address',
+  'socket_dst_family',
+  'socket_dst_address',
   'socket_dst_port',
   'req_path',
   'req_method',
   'res_status',
   'err_code',
   'type',
-  'port',
-  'host',
-  'instance'
+  'instance',
+  'instance_ip'
 ];
 const gauge = new promClient.Gauge({
   name: 'lastmile_http_request_time_milliseconds',
@@ -33,6 +33,7 @@ module.exports = (config, metrics) => {
     const labels = {
       instance: config.instance
     };
+    if (config.instance_address) labels.instance_address = config.instance_address;
     labelNames.forEach((labelName) => {
       if (metric[labelName]) labels[labelName] = metric[labelName];
     });
