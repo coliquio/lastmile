@@ -5,3 +5,9 @@ chmod +x /usr/local/bin/lastmile-reload
 crontab -u root - <<- EOM
 */5 * * * * bash /usr/local/bin/lastmile-reload
 EOM
+cat << EOF > ~/.lastmile.env
+PUSHGATEWAY_URL=$PUSHGATEWAY_URL
+PUSHGATEWAY_AUTH=$PUSHGATEWAY_AUTH
+INSTANCE=$INSTANCE
+ENVIRONMENT=$ENVIRONMENT
+EOF
