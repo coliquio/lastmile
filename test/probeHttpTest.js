@@ -45,7 +45,7 @@ describe('probeHttp', () => {
     assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      err_code: 'ECONNABORTED',
+      err_code: 'TIMEOUT',
     }, metrics);
   });
 });
