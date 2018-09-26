@@ -15,7 +15,7 @@ const labelNames = [
   'err_code',
   'probe_type',
   'instance',
-  'instance_ip'
+  'instance_address'
 ];
 const gauge = new promClient.Gauge({
   name: 'lastmile_http_request_time_milliseconds',
