@@ -12,6 +12,7 @@ const PUSHGATEWAY_AUTH = process.env.PUSHGATEWAY_AUTH;
 const PROBES_CONFIG_URL = process.env.PROBES_CONFIG_URL || 'file://./example/probes.json';
 const INSTANCE = process.env.INSTANCE || os.hostname();
 const ENVIRONMENT = process.env.ENVIRONMENT || 'test';
+const PROBE_INTERVAL = parseInt(process.env.PROBE_INTERVAL || '60000');
 
 const probeAll = require('./src/probeAll');
 const pushMetrics = require('./src/pushMetrics');
@@ -38,4 +39,4 @@ setInterval(async () => {
   } catch (e) {
     console.error(e);
   }
-}, 1000);
+}, PROBE_INTERVAL);
