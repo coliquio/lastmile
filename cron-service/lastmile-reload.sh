@@ -33,7 +33,7 @@ RUNNING=`docker ps -q -f name=lastmile`
 if [ -z "$RUNNING" ]; then
     echo "[OK] Starting" | logger -t lastmile-reload
     docker run -d \
-        --env-file ~/.lastmile.env
+        --env-file ~/.lastmile.env \
         --name lastmile \
         $IMAGE
 fi
