@@ -47,23 +47,24 @@ describe('pushMetrics', () => {
         err_code: 'ERR_FOO'
       },
       {
-        duration: 140,
-        res_status: 200,
-        socket_family: 'IPv4',
-        socket_dst_address: '52.0.0.3',
-        socket_tls_protocol: 'TLSv3',
         protocol: 'https',
         socket_src_address: '172.0.0.3',
-        socket_dst_port: '443',
+        socket_dst_family: 'IPv4',
+        socket_dst_address: '52.0.0.3',
+        socket_tls_protocol: 'TLSv3',
+        req_host: 'example.com',
+        req_port: '443',
         req_path: '/foo',
-        req_method: 'GET'
+        req_method: 'GET',
+        res_status: 200,
+        duration: 140
       }
     ]);
     assert.equal(res.statusCode, 200);
     assert.equal(`# HELP lastmile_http_request_time_milliseconds duration of the request from lastmile
 # TYPE lastmile_http_request_time_milliseconds gauge
 lastmile_http_request_time_milliseconds{instance="hostname_i1",err_code="ERR_FOO"} 1337
-lastmile_http_request_time_milliseconds{instance="hostname_i1",protocol="https",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_address="52.0.0.3",socket_dst_port="443",req_path="/foo",req_method="GET",res_status="200"} 140
+lastmile_http_request_time_milliseconds{instance="hostname_i1",protocol="https",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",res_status="200"} 140
 `, latestReceivedMetrics.body);
     assert.equal('/metrics/job/lastmile/environment/test', latestReceivedMetrics.path);
     assert.equal('POST', latestReceivedMetrics.method);

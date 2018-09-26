@@ -29,7 +29,7 @@ describe('probeHttps', () => {
       server.close();
     });
     
-    it('returns metrics xxx', async () => {
+    it('returns metrics', async () => {
       const metrics = await probeHttps({
         host: 'localhost',
         port: server.address().port,

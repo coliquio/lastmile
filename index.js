@@ -18,15 +18,14 @@ const PROBE_INTERVAL = parseInt(process.env.PROBE_INTERVAL || '60000');
 const probeAll = require('./src/probeAll');
 const pushMetrics = require('./src/pushMetrics');
 const loadProbesConfig = require('./src/loadProbesConfig');
+const enrichMetrics = require('./src/enrichMetrics');
 
 const run = async () => {
   try {
     const probesConfig = await loadProbesConfig(PROBES_CONFIG_URL);
     const metrics = await probeAll(probesConfig);
-    const publishMetrics = probesConfig.map((probeConfig, idx) => {
-      return Object.assign({}, probeConfig, metrics[idx]);
-    });
-    console.log(publishMetrics);
+    const enrichedMetrics = enrichMetrics(metrics, probesConfig)
+    console.log(enrichedMetrics);
     try {
       await pushMetrics({
         url: PUSHGATEWAY_URL,
@@ -34,7 +33,7 @@ const run = async () => {
         environment: ENVIRONMENT,
         instance: INSTANCE,
         instance_address: INSTANCE_ADDRESS
-      }, publishMetrics);  
+      }, enrichedMetrics);
     } catch (e) {
       console.error('ERROR could not publish metrics', e);
     }

@@ -7,12 +7,13 @@ const labelNames = [
   'socket_src_address',
   'socket_dst_family',
   'socket_dst_address',
-  'socket_dst_port',
+  'req_host',
+  'req_port',
   'req_path',
   'req_method',
   'res_status',
   'err_code',
-  'type',
+  'probe_type',
   'instance',
   'instance_ip'
 ];
