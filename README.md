@@ -9,7 +9,7 @@ This installs to root crontab.
     curl https://raw.githubusercontent.com/coliquio/lastmile/master/cron-service/installer.sh | \
       PUSHGATEWAY_URL=<path-to-prometheus> \
       PUSHGATEWAY_AUTH=<user>:<pass> \
-      PROBES_CONFIG_URL=https://raw.githubusercontent.com/coliquio/lastmile/master/example/probes.config \
+      PROBES_CONFIG_URL=https://raw.githubusercontent.com/coliquio/lastmile/master/example/probes.json \
       ENVIRONMENT=local \
       INSTANCE=lastmile \
       bash
