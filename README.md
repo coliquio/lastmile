@@ -1,5 +1,7 @@
 # Lastmile
 
+![https://travis-ci.com/coliquio/lastmile.svg?branch=master](https://travis-ci.com/coliquio/lastmile.svg?branch=master)
+
 Monitors edge location connectivity and reports back to central prometheus.
 
 ## Install as Cron service
