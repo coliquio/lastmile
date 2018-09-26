@@ -1,0 +1,12 @@
+[
+  {
+    "type": "http",
+    "port": 80,
+    "host": "example.com"
+  },
+  {
+    "type": "https",
+    "port": 443,
+    "host": "example.com"
+  }
+]

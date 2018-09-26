@@ -1,0 +1,12 @@
+version: "3"
+services:
+  lastmile:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - PUSHGATEWAY_URL=http://pushgateway:9091
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
