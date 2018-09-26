@@ -2,9 +2,20 @@
 
 Monitors edge location connectivity and reports back to central prometheus.
 
-## Run
+## Install as Cron service
 
-`docker-compose up`
+This installs to root crontab.
+
+    curl https://raw.githubusercontent.com/coliquio/lastmile/master/cron-service/installer.sh | \
+      PUSHGATEWAY_URL=<path-to-prometheus> \
+      PUSHGATEWAY_AUTH=<user>:<pass> \
+      ENVIRONMENT=local \
+      INSTANCE=lastmile \
+      bash
+
+## Run Test Environment
+
+    docker-compose up
 
 ## License
 
