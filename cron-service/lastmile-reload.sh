@@ -21,13 +21,18 @@ LATEST_DIGEST=`docker inspect "$IMAGE" | grep Id | sed "s/\"//g" | sed "s/,//g" 
 
 echo "LATEST_DIGEST=$LATEST_DIGEST LOCAL_DIGEST=$LOCAL_DIGEST"
 
-if [ "$LATEST_DIGEST" == "$LOCAL_DIGEST" ];then
+if [ "$LATEST_DIGEST" == "$LOCAL_DIGEST" ]; then
     echo "[OK] Already running latest docker image. Don't restart."
 else
     echo "[UPDATE] Got newer docker image. Restarting container!"
     docker stop lastmile
-    docker rm lastmile
-    docker run \
-      --name lastmile \
-      $IMAGE
+    docker rm -f lastmile
+fi
+
+RUNNING=`docker ps -q -f name=lastmile`
+if [ -z "$RUNNING" ]; then
+    echo "[OK] Starting"
+    docker run -d \
+        --name lastmile \
+        $IMAGE
 fi
