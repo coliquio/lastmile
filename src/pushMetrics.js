@@ -2,25 +2,33 @@ const promClient = require('prom-client');
 
 const labelNames = [
   'protocol',
-  'socket_tls_protocol',
-  'socket_src_family',
-  'socket_src_address',
-  'socket_dst_family',
-  'socket_dst_address',
   'req_url',
   'req_host',
   'req_port',
   'req_path',
   'req_method',
-  'res_status',
-  'err_code',
   'probe_type',
   'instance',
   'instance_address',
 ];
-const gauge = new promClient.Gauge({
+const detailedLabelNames = [
+  'socket_tls_protocol',
+  'socket_src_family',
+  'socket_src_address',
+  'socket_dst_family',
+  'socket_dst_address',
+  'res_status',
+  'err_code',
+  'probe_type',
+];
+const responseTime = new promClient.Gauge({
   name: 'lastmile_http_request_time_milliseconds',
   help: 'duration of the request from lastmile',
+  labelNames: labelNames.concat(detailedLabelNames)
+});
+const probeStatus = new promClient.Gauge({
+  name: 'lastmile_probe_status',
+  help: 'probe status (0=ok, 1=error)',
   labelNames
 });
 
@@ -34,7 +42,12 @@ module.exports = (config, metrics) => {
       labelNames.forEach((labelName) => {
         if (metric[labelName]) labels[labelName] = metric[labelName];
       });
-      gauge.set(labels, metric.duration); 
+      const detailedLabels = Object.assign({}, labels);
+      detailedLabelNames.forEach((labelName) => {
+        if (metric[labelName]) detailedLabels[labelName] = metric[labelName];
+      });
+      responseTime.set(detailedLabels, metric.duration); 
+      probeStatus.set(labels, metric.probe_status); 
     });
 
     const gatewayOptions = { timeout: 5000 };

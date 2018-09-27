@@ -34,6 +34,9 @@ describe('probeHttps', () => {
         host: 'localhost',
         port: server.address().port,
         path: '/simulate/ok',
+        expect: {
+          statusCode: 200
+        },
         agent: new https.Agent({
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
         })
@@ -41,6 +44,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
+        probe_status: 0,
         res_status: 200,
         socket_dst_family: 'IPv4',
         socket_dst_address: '127.0.0.1',
@@ -55,6 +59,9 @@ describe('probeHttps', () => {
         host: 'localhost',
         port: server.address().port,
         path: '/simulate/timeout',
+        expect: {
+          statusCode: 200
+        },
         agent: new https.Agent({
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
         }),
@@ -63,6 +70,7 @@ describe('probeHttps', () => {
       assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
+        probe_status: 1,
         err_code: 'TIMEOUT',
       }, metrics);
     });
@@ -72,6 +80,9 @@ describe('probeHttps', () => {
         host: '127.0.0.1',
         port: server.address().port,
         path: '/simulate/ok',
+        expect: {
+          statusCode: 200
+        },
         agent: new https.Agent({
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
         })
@@ -79,6 +90,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
+        probe_status: 1,
         err_code: 'ERR_TLS_CERT_ALTNAME_INVALID'
       }, metrics);
     });
@@ -107,11 +119,15 @@ describe('probeHttps', () => {
       const metrics = await probeHttps({
         host: 'localhost',
         port: server.address().port,
-        path: '/simulate/ok'
+        path: '/simulate/ok',
+        expect: {
+          statusCode: 200
+        }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
+        probe_status: 1,
         err_code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
       }, metrics);
     });
@@ -140,11 +156,15 @@ describe('probeHttps', () => {
       const metrics = await probeHttps({
         host: 'localhost',
         port: server.address().port,
-        path: '/simulate/ok'
+        path: '/simulate/ok',
+        expect: {
+          statusCode: 200
+        }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
+        probe_status: 1,
         err_code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
       }, metrics);
     });

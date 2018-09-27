@@ -2,6 +2,14 @@ const DEFAULT_PORTS = {
   http: '80',
   https: '443'
 };
+const DEFAULT_EXPECTS = {
+  http: {
+    statusCode: '2[0-9][0-9]'
+  },
+  https: {
+    statusCode: '2[0-9][0-9]'
+  }
+};
 module.exports = (cfg) => {
   if (typeof cfg.url === 'string') {
     const url = new URL(cfg.url);
@@ -10,7 +18,8 @@ module.exports = (cfg) => {
       type,
       url: cfg.url,
       host: url.hostname,
-      port: url.port || DEFAULT_PORTS[type]
+      port: url.port || DEFAULT_PORTS[type],
+      expect: cfg.expect || DEFAULT_EXPECTS[type]
     };
     if (typeof url.path === 'string' && url.path.length > 0) {
       result.path = url.path;

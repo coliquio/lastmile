@@ -22,8 +22,18 @@ describe('loadProbesConfig', () => {
     it('returns parsed config', async () => {
       const config = await loadProbesConfig(`http://localhost:${server.address().port}/config`);
       assert.deepEqual([
-        { url: 'http://example.com:8080', type: 'http', host: 'example.com', port: '8080' },
-        { url: 'https://example.com:8443', type: 'https', host: 'example.com', port: '8443' }
+        {
+          url: 'http://example.com:8080', type: 'http', host: 'example.com', port: '8080',
+          expect: {
+            statusCode: '2[0-9][0-9]'
+          }
+        },
+        {
+          url: 'https://example.com:8443', type: 'https', host: 'example.com', port: '8443',
+          expect: {
+            statusCode: '2[0-9][0-9]'
+          }
+        }
       ], config);
     });
   });
@@ -31,8 +41,18 @@ describe('loadProbesConfig', () => {
     it('returns parsed config', async () => {
       const config = await loadProbesConfig('file://test/assets/exampe-config.json');
       assert.deepEqual([
-        { url: 'http://example.com', type: 'http', host: 'example.com', port: '80' },
-        { url: 'https://example.com', type: 'https', host: 'example.com', port: '443' }
+        {
+          url: 'http://example.com', type: 'http', host: 'example.com', port: '80',
+          expect: {
+            statusCode: '2[0-9][0-9]'
+          }
+        },
+        {
+          url: 'https://example.com', type: 'https', host: 'example.com', port: '443',
+          expect: {
+            statusCode: '2[0-9][0-9]'
+          }
+        }
       ], config);
     });
   });

@@ -1,4 +1,5 @@
 const measureDurationInMs = require('./measureDurationInMs');
+const probeStatus = require('./probeStatus');
 const https = require('https');
 module.exports = async (config) => {
   const getDurationInMs = measureDurationInMs();
@@ -27,6 +28,7 @@ module.exports = async (config) => {
       res.on('data', () => {});
       res.on('end', () => {
         resolve(Object.assign({
+          probe_status: `${res.statusCode}`.match(config.expect.statusCode) ? probeStatus.ok : probeStatus.error,
           res_status: res.statusCode,
           duration: getDurationInMs()
         }, result));
@@ -34,6 +36,7 @@ module.exports = async (config) => {
     });
     request.on('error', (e) => {
       resolve(Object.assign({
+        probe_status: probeStatus.error,
         err_code: timedOut ? 'TIMEOUT' : e.code,
         duration: getDurationInMs()
       }, result));

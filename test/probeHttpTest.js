@@ -24,11 +24,15 @@ describe('probeHttp', () => {
     const metrics = await probeHttp({
       host: 'localhost',
       port: server.address().port,
-      path: '/simulate/ok'
+      path: '/simulate/ok',
+      expect: {
+        statusCode: 200
+      }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
+      probe_status: 0,
       res_status: 200,
       socket_dst_family: 'IPv4',
       socket_dst_address: '127.0.0.1',
@@ -42,11 +46,15 @@ describe('probeHttp', () => {
       host: 'localhost',
       port: server.address().port,
       path: '/simulate/timeout',
-      timeout: 500
+      timeout: 500,
+      expect: {
+        statusCode: 200
+      }
     });
     assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
+      probe_status: 1,
       err_code: 'TIMEOUT',
     }, metrics);
   });
