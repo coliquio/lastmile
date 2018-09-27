@@ -7,6 +7,7 @@ const labelNames = [
   'socket_src_address',
   'socket_dst_family',
   'socket_dst_address',
+  'req_url',
   'req_host',
   'req_port',
   'req_path',
@@ -15,7 +16,7 @@ const labelNames = [
   'err_code',
   'probe_type',
   'instance',
-  'instance_address'
+  'instance_address',
 ];
 const gauge = new promClient.Gauge({
   name: 'lastmile_http_request_time_milliseconds',

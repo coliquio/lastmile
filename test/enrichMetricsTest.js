@@ -11,6 +11,7 @@ describe('enrichMetrics', () => {
       duration: 'duration',
       err_code: 'err_code',
       probe_type: 'type',
+      req_url: 'http://url',
       req_host: 'host',
       req_port: 'port',
       req_path: 'path'
@@ -23,6 +24,7 @@ describe('enrichMetrics', () => {
       duration: 'duration',
       err_code: 'err_code'
     }], [{
+      url: 'http://url',
       type: 'type',
       host: 'host',
       port: 'port',

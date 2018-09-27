@@ -8,6 +8,7 @@ module.exports = (cfg) => {
     const type = url.protocol.split(':')[0];
     const result = {
       type,
+      url: cfg.url,
       host: url.hostname,
       port: url.port || DEFAULT_PORTS[type]
     };
