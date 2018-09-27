@@ -49,7 +49,7 @@ module.exports = (config, metrics) => {
         environment: config.environment,
         instance: config.instance
       }
-    }, function(err, resp, body) {
+    }, function() {
       gateway.pushAdd({
         jobName: 'lastmile',
         groupings: {
