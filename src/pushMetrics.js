@@ -47,11 +47,13 @@ module.exports = (config, metrics) => {
       groupings: {
         environment: config.environment
       }
-    }, (err, resp, body) => {
+    }, (err, res, body) => {
       if (err) {
         reject(err);
+      } else if (res.statusCode >= 400) {
+        reject(new Error(`Could not publish metrics ${res.statusCode} ${res.statusMessage}`));
       } else {
-        resolve(resp, body);
+        resolve(res, body);
       }
     });
 
