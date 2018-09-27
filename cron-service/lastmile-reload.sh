@@ -21,11 +21,13 @@ LATEST_DIGEST=`docker inspect "$IMAGE" | grep Id | sed "s/\"//g" | sed "s/,//g" 
 
 echo "LATEST_DIGEST=$LATEST_DIGEST LOCAL_DIGEST=$LOCAL_DIGEST"
 
-if [ "$LATEST_DIGEST" == "$LOCAL_DIGEST" ]; then
-    echo "[OK] Already running latest docker image. Don't restart." | logger -t lastmile-reload
+if [ "$1" == "-f" ]; then
+    echo "force-flag detected. Restarting container!" | logger -t lastmile-reload
+    docker rm -f lastmile
+elif [ "$LATEST_DIGEST" == "$LOCAL_DIGEST" ]; then
+    echo "Already running latest docker image. Don't restart." | logger -t lastmile-reload
 else
-    echo "[UPDATE] Got newer docker image. Restarting container!" | logger -t lastmile-reload
-    docker stop lastmile
+    echo "Got newer docker image. Restarting container!" | logger -t lastmile-reload
     docker rm -f lastmile
 fi
 
