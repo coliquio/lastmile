@@ -25,24 +25,23 @@ const gauge = new promClient.Gauge({
 });
 
 module.exports = (config, metrics) => {
-  const gatewayOptions = { timeout: 5000 };
-  if (config.auth) {
-    gatewayOptions.auth = config.auth;
-  }
-  const gateway = new promClient.Pushgateway(config.url, gatewayOptions);
-
-  metrics.forEach(metric => {
-    const labels = {
-      instance: config.instance
-    };
-    if (config.instance_address) labels.instance_address = config.instance_address;
-    labelNames.forEach((labelName) => {
-      if (metric[labelName]) labels[labelName] = metric[labelName];
-    });
-    gauge.set(labels, metric.duration); 
-  });
-
   return new Promise((resolve, reject) => {
+    metrics.forEach(metric => {
+      const labels = {
+        instance: config.instance
+      };
+      if (config.instance_address) labels.instance_address = config.instance_address;
+      labelNames.forEach((labelName) => {
+        if (metric[labelName]) labels[labelName] = metric[labelName];
+      });
+      gauge.set(labels, metric.duration); 
+    });
+
+    const gatewayOptions = { timeout: 5000 };
+    if (config.auth) {
+      gatewayOptions.auth = config.auth;
+    }
+    const gateway = new promClient.Pushgateway(config.url, gatewayOptions);
     gateway.delete({
       jobName: 'lastmile',
       groupings: {
@@ -57,6 +56,7 @@ module.exports = (config, metrics) => {
           instance: config.instance
         }
       }, (err, res, body) => {
+        promClient.register.resetMetrics(); // otherwise old metrics labels get sent also
         if (err) {
           reject(err);
         } else if (res.statusCode >= 400) {
