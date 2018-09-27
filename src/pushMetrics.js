@@ -43,20 +43,28 @@ module.exports = (config, metrics) => {
   });
 
   return new Promise((resolve, reject) => {
-    gateway.pushAdd({
+    gateway.delete({
       jobName: 'lastmile',
       groupings: {
-        environment: config.environment
+        environment: config.environment,
+        instance: config.instance
       }
-    }, (err, res, body) => {
-      if (err) {
-        reject(err);
-      } else if (res.statusCode >= 400) {
-        reject(new Error(`Could not publish metrics ${res.statusCode} ${res.statusMessage}`));
-      } else {
-        resolve(res, body);
-      }
+    }, function(err, resp, body) {
+      gateway.pushAdd({
+        jobName: 'lastmile',
+        groupings: {
+          environment: config.environment,
+          instance: config.instance
+        }
+      }, (err, res, body) => {
+        if (err) {
+          reject(err);
+        } else if (res.statusCode >= 400) {
+          reject(new Error(`Could not publish metrics ${res.statusCode} ${res.statusMessage}`));
+        } else {
+          resolve(res, body);
+        }
+      });
     });
-
   });
 };
