@@ -10,8 +10,6 @@ const labelNames = [
   'probe_type',
   'instance',
   'instance_address',
-];
-const detailedLabelNames = [
   'socket_tls_protocol',
   'socket_src_family',
   'socket_src_address',
@@ -19,13 +17,11 @@ const detailedLabelNames = [
   'socket_dst_address',
   'res_status',
   'err_code',
-  'probe_type',
-  'probe_status'
 ];
 const responseTime = new promClient.Gauge({
   name: 'lastmile_http_request_time_milliseconds',
   help: 'duration of the request from lastmile',
-  labelNames: labelNames.concat(detailedLabelNames)
+  labelNames: labelNames.concat(['probe_status'])
 });
 const probeStatus = new promClient.Gauge({
   name: 'lastmile_probe_status',
@@ -43,11 +39,9 @@ module.exports = (config, metrics) => {
       labelNames.forEach((labelName) => {
         if (typeof metric[labelName] !== 'undefined') labels[labelName] = String(metric[labelName]);
       });
-      const detailedLabels = Object.assign({}, labels);
-      detailedLabelNames.forEach((labelName) => {
-        if (typeof metric[labelName] !== 'undefined') detailedLabels[labelName] = String(metric[labelName]);
-      });
-      responseTime.set(detailedLabels, metric.duration); 
+      responseTime.set(Object.assign({
+        probe_status: metric.probe_status
+      }, labels), metric.duration);
       probeStatus.set(labels, metric.probe_status); 
     });
 

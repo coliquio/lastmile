@@ -69,13 +69,13 @@ describe('pushMetrics', () => {
     assert.equal('DELETE', latestReceivedReq[0].method);
     assert.equal(`# HELP lastmile_http_request_time_milliseconds duration of the request from lastmile
 # TYPE lastmile_http_request_time_milliseconds gauge
-lastmile_http_request_time_milliseconds{instance="hostname_i1",instance_address="192.0.0.3",err_code="ERR_FOO",probe_status="1"} 1337
-lastmile_http_request_time_milliseconds{instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",res_status="200",probe_status="0"} 140
+lastmile_http_request_time_milliseconds{probe_status="1",instance="hostname_i1",instance_address="192.0.0.3",err_code="ERR_FOO"} 1337
+lastmile_http_request_time_milliseconds{probe_status="0",instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",res_status="200"} 140
 
 # HELP lastmile_probe_status probe status (0=ok, 1=error)
 # TYPE lastmile_probe_status gauge
-lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3"} 1
-lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET"} 0
+lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",err_code="ERR_FOO"} 1
+lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",res_status="200"} 0
 `, latestReceivedReq[1].body);
     assert.equal('/metrics/job/lastmile/environment/test/instance/hostname_i1', latestReceivedReq[1].path);
     assert.equal('POST', latestReceivedReq[1].method);
