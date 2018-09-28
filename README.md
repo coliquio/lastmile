@@ -25,7 +25,7 @@ This installs to root crontab.
 
 ![https://travis-ci.com/coliquio/lastmile.svg?branch=master](https://travis-ci.com/coliquio/lastmile.svg?branch=master)
 
-See [https://travis-ci.com/coliquio/lastmile]
+See [https://travis-ci.com/coliquio/lastmile](https://travis-ci.com/coliquio/lastmile)
 
 ## License
 
