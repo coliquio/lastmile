@@ -7,6 +7,7 @@ const labelNames = [
   'req_port',
   'req_path',
   'req_method',
+  'res_addresses',
   'probe_type',
   'probe_id',
   'probe_failed_expectations',
