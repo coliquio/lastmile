@@ -21,6 +21,9 @@ module.exports = (cfg) => {
       port: url.port || DEFAULT_PORTS[type],
       expect: cfg.expect || DEFAULT_EXPECTS[type]
     };
+    if (cfg.tls) {
+      result.tls = cfg.tls;
+    }
     if (typeof url.path === 'string' && url.path.length > 0) {
       result.path = url.path;
     }

@@ -18,7 +18,10 @@ describe('parseProbeConfig', () => {
       port: '443',
       expect: {
         statusCode: '2[0-9][0-9]'
+      },
+      tls: {
+        ca: 'tls-ca-cert'
       }
-    }, parseProbeConfig({url: 'https://example.com'}));
+    }, parseProbeConfig({url: 'https://example.com', tls: {ca: 'tls-ca-cert'}}));
   });
 });

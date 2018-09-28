@@ -37,9 +37,9 @@ describe('probeHttps', () => {
         expect: {
           statusCode: 200
         },
-        agent: new https.Agent({
-          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
-        })
+        tls: {
+          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
+        }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
@@ -62,9 +62,9 @@ describe('probeHttps', () => {
         expect: {
           statusCode: 200
         },
-        agent: new https.Agent({
-          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
-        }),
+        tls: {
+          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8') 
+        },
         timeout: 500
       });
       assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
@@ -83,9 +83,9 @@ describe('probeHttps', () => {
         expect: {
           statusCode: 200
         },
-        agent: new https.Agent({
-          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt')
-        })
+        tls: {
+          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
+        }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;

@@ -9,8 +9,10 @@ module.exports = async (config) => {
     path: config.path || '/',
     method: config.method || 'GET'
   };
-  if (config.agent) {
-    options.agent = config.agent;
+  if (typeof config.tls === 'object' && typeof config.tls.ca === 'string') {
+    options.agent = new https.Agent({
+      ca: config.tls.ca
+    })
   }
   return new Promise((resolvePromise) => {
     let result = {};
