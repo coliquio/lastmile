@@ -21,6 +21,12 @@ This installs to root crontab.
 
     docker-compose up
 
+## CI Environment
+
+![https://travis-ci.com/coliquio/lastmile.svg?branch=master](https://travis-ci.com/coliquio/lastmile.svg?branch=master)
+
+See [https://travis-ci.com/coliquio/lastmile]
+
 ## License
 
 See [LICENSE](LICENSE).
