@@ -9,9 +9,6 @@ module.exports = async (config) => {
     path: config.path || '/',
     method: config.method || 'GET'
   };
-  if (config.agent) {
-    options.agent = config.agent;
-  }
   return new Promise((resolvePromise) => {
     let result = {};
     let timedOut = false;
