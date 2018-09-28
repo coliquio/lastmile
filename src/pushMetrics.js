@@ -9,6 +9,7 @@ const labelNames = [
   'req_method',
   'probe_type',
   'probe_id',
+  'probe_failed_expectations',
   'instance',
   'instance_address',
   'socket_tls_protocol',

@@ -1,4 +1,5 @@
 module.exports = {
   ok: 0,
-  error: 1
+  failedExpectation: 1,
+  error: 2
 };
