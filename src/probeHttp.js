@@ -1,6 +1,6 @@
 const measureDurationInMs = require('./measureDurationInMs');
 const probeStatus = require('./probeStatus');
-const matchExpectation = require('./matchExpectation')
+const matchHttpExpectation = require('./matchHttpExpectation')
 const http = require('http');
 module.exports = async (config) => {
   const getDurationInMs = measureDurationInMs();
@@ -18,7 +18,7 @@ module.exports = async (config) => {
       resolvePromise(value);
     };
     const request = http.request(options, (res) => {
-      const expectationMatch = matchExpectation(config, res);
+      const expectationMatch = matchHttpExpectation(config, res);
       result.probe_status = expectationMatch.ok ? probeStatus.ok : probeStatus.failedExpectation
       if (!expectationMatch.ok) result.probe_failed_expectations = expectationMatch.failedExpectations.join(',')
       result.res_status = res.statusCode
