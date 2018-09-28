@@ -12,7 +12,7 @@ module.exports = async (config) => {
   if (typeof config.tls === 'object' && typeof config.tls.ca === 'string') {
     options.agent = new https.Agent({
       ca: config.tls.ca
-    })
+    });
   }
   return new Promise((resolvePromise) => {
     let result = {};
