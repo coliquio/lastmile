@@ -1,6 +1,7 @@
 const assert = require('assert');
 const express = require('express');
 const probeHttp = require('../src/probeHttp');
+const probeStatus = require('../src/probeStatus');
 
 describe('probeHttp', () => {
   let server;
@@ -35,7 +36,7 @@ describe('probeHttp', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 0,
+      probe_status: probeStatus.ok,
       res_status: 200,
       socket_dst_family: 'IPv4',
       socket_dst_address: '127.0.0.1',
@@ -56,7 +57,7 @@ describe('probeHttp', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 1,
+      probe_status: probeStatus.failedExpectation,
       probe_failed_expectations: 'RES_STATUS',
       res_status: 500,
       socket_dst_family: 'IPv4',
@@ -79,7 +80,7 @@ describe('probeHttp', () => {
     assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 2,
+      probe_status: probeStatus.error,
       err_code: 'TIMEOUT',
     }, metrics);
   });

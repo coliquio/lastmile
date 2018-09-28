@@ -2,6 +2,7 @@ const assert = require('assert');
 const express = require('express');
 const https = require('https');
 const probeHttps = require('../src/probeHttps');
+const probeStatus = require('../src/probeStatus');
 const fs = require('fs');
 
 describe('probeHttps', () => {
@@ -47,7 +48,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 0,
+        probe_status: probeStatus.ok,
         res_status: 200,
         socket_dst_family: 'IPv4',
         socket_dst_address: '127.0.0.1',
@@ -72,7 +73,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 1,
+        probe_status: probeStatus.failedExpectation,
         probe_failed_expectations: 'RES_STATUS',
         res_status: 500,
         socket_dst_family: 'IPv4',
@@ -99,7 +100,7 @@ describe('probeHttps', () => {
       assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 2,
+        probe_status: probeStatus.error,
         err_code: 'TIMEOUT',
       }, metrics);
     });
@@ -119,7 +120,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 2,
+        probe_status: probeStatus.error,
         err_code: 'ERR_TLS_CERT_ALTNAME_INVALID'
       }, metrics);
     });
@@ -156,7 +157,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 2,
+        probe_status: probeStatus.error,
         err_code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
       }, metrics);
     });
@@ -193,7 +194,7 @@ describe('probeHttps', () => {
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
       delete metrics.duration;
       assert.deepEqual({
-        probe_status: 2,
+        probe_status: probeStatus.error,
         err_code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
       }, metrics);
     });
