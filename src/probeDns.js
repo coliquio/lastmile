@@ -2,7 +2,7 @@ const measureDurationInMs = require('./measureDurationInMs');
 const probeStatus = require('./probeStatus')
 const dns = require('dns')
 module.exports = (config) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const getDurationInMs = measureDurationInMs();
     dns.resolve(config.host, config.rrtype || 'A', (err, addresses) => {
       const result = {
