@@ -10,7 +10,8 @@ describe('loadProbesConfig', () => {
       app.get('/config', (req, res) => {
         res.status(200).send([
           { 'url': 'http://example.com:8080' },
-          { 'url': 'https://example.com:8443' }
+          { 'url': 'https://example.com:8443' },
+          { 'type': 'dns', host: 'example.com' }
         ]);
       });
       server = app.listen(done);
@@ -33,6 +34,10 @@ describe('loadProbesConfig', () => {
           expect: {
             statusCode: '2[0-9][0-9]'
           }
+        },
+        {
+          type: 'dns', host: 'example.com',
+          expect: {}
         }
       ], config);
     });

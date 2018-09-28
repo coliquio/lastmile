@@ -20,8 +20,8 @@ const labelNames = [
   'res_status',
   'err_code',
 ];
-const responseTime = new promClient.Gauge({
-  name: 'lastmile_http_request_time_milliseconds',
+const probeDuration = new promClient.Gauge({
+  name: 'lastmile_probe_duration_milliseconds',
   help: 'duration of the request from lastmile',
   labelNames: labelNames.concat(['probe_status'])
 });
@@ -41,7 +41,7 @@ module.exports = (config, metrics) => {
       labelNames.forEach((labelName) => {
         if (typeof metric[labelName] !== 'undefined') labels[labelName] = String(metric[labelName]);
       });
-      responseTime.set(Object.assign({
+      probeDuration.set(Object.assign({
         probe_status: metric.probe_status
       }, labels), metric.duration);
       probeStatus.set(labels, metric.probe_status); 

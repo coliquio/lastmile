@@ -28,6 +28,10 @@ module.exports = (cfg) => {
       result.path = url.path;
     }
     return result;
+  } else if (cfg.type === 'dns') {
+    return Object.assign({
+      expect: {}
+    }, cfg)
   } else {
     return null;
   }

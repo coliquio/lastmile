@@ -1,4 +1,5 @@
 [
   { "url": "http://example.com" },
-  { "url": "https://example.com" }
+  { "url": "https://example.com" },
+  { "type": "dns", "host": "example.com" }
 ]

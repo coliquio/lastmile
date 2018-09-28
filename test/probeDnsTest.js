@@ -1,0 +1,59 @@
+const assert = require('assert');
+const probeDns = require('../src/probeDns');
+
+describe('probeDns', () => {
+  it('returns metrics', async () => {
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      expect: {}
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 0
+    }, metrics);
+  });
+
+  it('returns metrics with expecation', async () => {
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      rrtype: 'CNAME',
+      expect: {
+        address: 's3-website.eu-central-1.amazonaws.com'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 0
+    }, metrics);
+  });
+
+  it('returns metrics with failed expectations', async () => {
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      rrtype: 'CNAME',
+      expect: {
+        address: 'this-does-not-match'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 1,
+      probe_failed_expectations: 'ADDRESS'
+    }, metrics);
+  });
+
+  it('returns metrics for ENOTFOUND', async () => {
+    const metrics = await probeDns({
+      host: 'this-does-not-exist'
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 2,
+      err_code: 'ENOTFOUND'
+    }, metrics);
+  });
+});
