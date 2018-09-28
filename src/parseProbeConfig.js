@@ -31,7 +31,7 @@ module.exports = (cfg) => {
   } else if (cfg.type === 'dns') {
     return Object.assign({
       expect: {}
-    }, cfg)
+    }, cfg);
   } else {
     return null;
   }

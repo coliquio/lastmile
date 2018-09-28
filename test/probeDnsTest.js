@@ -9,12 +9,13 @@ describe('probeDns', () => {
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
+    delete metrics.res_addresses;
     assert.deepEqual({
       probe_status: 0
     }, metrics);
   });
 
-  it('returns metrics with expecation', async () => {
+  it('returns metrics with expectation', async () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
       rrtype: 'CNAME',
@@ -25,7 +26,8 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 0
+      probe_status: 0,
+      'res_addresses': 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
   });
 
@@ -41,7 +43,8 @@ describe('probeDns', () => {
     delete metrics.duration;
     assert.deepEqual({
       probe_status: 1,
-      probe_failed_expectations: 'ADDRESS'
+      probe_failed_expectations: 'ADDRESS',
+      res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
   });
 
