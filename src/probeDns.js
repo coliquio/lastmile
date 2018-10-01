@@ -9,8 +9,17 @@ module.exports = (config) => {
         duration: getDurationInMs()
       };
       if (err) {
-        result.probe_status = probeStatus.error;
         result.err_code = err.code;
+        if (config.expect.err_code) {
+          if (config.expect.err_code == err.code) {
+            result.probe_status = probeStatus.ok;
+          } else {
+            result.probe_status = probeStatus.failedExpectation;
+            result.probe_failed_expectations = 'ERR_CODE';
+          }
+        } else {
+          result.probe_status = probeStatus.error;
+        }
       } else {
         result.res_addresses = addresses.join(',');
         if (config.expect.address && addresses.indexOf(config.expect.address) < 0) {

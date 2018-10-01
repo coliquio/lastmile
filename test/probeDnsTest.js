@@ -50,13 +50,45 @@ describe('probeDns', () => {
 
   it('returns metrics for ENOTFOUND', async () => {
     const metrics = await probeDns({
-      host: 'this-does-not-exist'
+      host: 'this-does-not-exist',
+      expect: {}
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
       probe_status: 2,
       err_code: 'ENOTFOUND'
+    }, metrics);
+  });
+
+  it('returns metrics for expected err_code', async () => {
+    const metrics = await probeDns({
+      host: 'this-does-not-exist',
+      expect: {
+        err_code: 'ENOTFOUND'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 0,
+      err_code: 'ENOTFOUND'
+    }, metrics);
+  });
+
+  it('returns metrics for unexpected err_code', async () => {
+    const metrics = await probeDns({
+      host: 'this-does-not-exist',
+      expect: {
+        err_code: 'FOO'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 1,
+      err_code: 'ENOTFOUND',
+      probe_failed_expectations: 'ERR_CODE'
     }, metrics);
   });
 });
