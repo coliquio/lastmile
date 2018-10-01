@@ -41,7 +41,8 @@ describe('pushMetrics', () => {
       auth: 'lastmile:secret',
       instance: 'hostname_i1',
       instance_address: '192.0.0.3',
-      environment: 'test'
+      environment: 'test',
+      timestamp: 1337
     }, [
       {
         duration: 1337,
@@ -88,6 +89,10 @@ lastmile_probe_duration_milliseconds{probe_status="0",instance="hostname_i1",ins
 lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",probe_id="probeid",probe_failed_expectations="F1,F2",err_code="ERR_FOO"} 1
 lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",probe_id="https://example.com/foo",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",res_status="200"} 0
 lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="dns",res_addresses="127.0.0.1,127.0.0.2"} 0
+
+# HELP lastmile_last_seen timestamp
+# TYPE lastmile_last_seen counter
+lastmile_last_seen{instance="hostname_i1",instance_address="192.0.0.3"} 1337
 `, latestReceivedReq[1].body);
     assert.equal('/metrics/job/lastmile/environment/test/instance/hostname_i1', latestReceivedReq[1].path);
     assert.equal('POST', latestReceivedReq[1].method);

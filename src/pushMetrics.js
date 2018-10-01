@@ -1,6 +1,11 @@
 const promClient = require('prom-client');
 
-const labelNames = [
+const instanceLabelNames = [
+  'instance',
+  'instance_address'
+];
+
+const probeLabelNames = [
   'protocol',
   'req_url',
   'req_host',
@@ -24,22 +29,29 @@ const labelNames = [
 const probeDuration = new promClient.Gauge({
   name: 'lastmile_probe_duration_milliseconds',
   help: 'duration of the request from lastmile',
-  labelNames: labelNames.concat(['probe_status'])
+  labelNames: probeLabelNames.concat(['probe_status'])
 });
 const probeStatus = new promClient.Gauge({
   name: 'lastmile_probe_status',
   help: 'probe status (0=ok, 1=error)',
-  labelNames
+  labelNames: probeLabelNames
+});
+const lastSeen = new promClient.Counter({
+  name: 'lastmile_last_seen',
+  help: 'timestamp',
+  labelNames: instanceLabelNames
 });
 
 module.exports = (config, metrics) => {
   return new Promise((resolve, reject) => {
+    const instanceLabels = {
+      instance: config.instance
+    };
+    if (config.instance_address) instanceLabels.instance_address = config.instance_address;
+    lastSeen.inc(instanceLabels, config.timestamp)
     metrics.forEach(metric => {
-      const labels = {
-        instance: config.instance
-      };
-      if (config.instance_address) labels.instance_address = config.instance_address;
-      labelNames.forEach((labelName) => {
+      const labels = Object.assign({}, instanceLabels)
+      probeLabelNames.forEach((labelName) => {
         if (typeof metric[labelName] !== 'undefined') labels[labelName] = String(metric[labelName]);
       });
       probeDuration.set(Object.assign({

@@ -32,7 +32,8 @@ const run = async () => {
         auth: PUSHGATEWAY_AUTH,
         environment: ENVIRONMENT,
         instance: INSTANCE,
-        instance_address: INSTANCE_ADDRESS
+        instance_address: INSTANCE_ADDRESS,
+        timestamp: (new Date()).getTime()
       }, enrichedMetrics);
     } catch (e) {
       console.log(JSON.stringify({
