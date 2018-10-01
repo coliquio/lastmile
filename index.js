@@ -25,7 +25,7 @@ const run = async () => {
     const probesConfig = await loadProbesConfig(PROBES_CONFIG_URL);
     const metrics = await probeAll(probesConfig);
     const enrichedMetrics = enrichMetrics(metrics, probesConfig);
-    console.log(enrichedMetrics);
+    console.log(JSON.stringify(enrichedMetrics));
     try {
       await pushMetrics({
         url: PUSHGATEWAY_URL,
@@ -35,10 +35,17 @@ const run = async () => {
         instance_address: INSTANCE_ADDRESS
       }, enrichedMetrics);
     } catch (e) {
-      console.error('ERROR could not publish metrics', e);
+      console.log(JSON.stringify({
+        priority: 'error',
+        message: 'ERROR could not publish metrics',
+        error: e
+      }));
     }
   } catch (e) {
-    console.error(e);
+    console.log(JSON.stringify({
+      priority: 'error',
+      error: e
+    }));
   }
 };
 run();
