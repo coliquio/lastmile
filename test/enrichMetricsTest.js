@@ -15,7 +15,8 @@ describe('enrichMetrics', () => {
       req_url: 'url',
       req_host: 'host',
       req_port: 'port',
-      req_path: 'path'
+      req_path: 'path',
+      probe_env: 'probe-env'
     }], enrichMetrics([{
       socket_dst_family: 'socket_dst_family',
       socket_dst_address: 'socket_dst_address',
@@ -29,7 +30,8 @@ describe('enrichMetrics', () => {
       type: 'type',
       host: 'host',
       port: 'port',
-      path: 'path'
+      path: 'path',
+      probe_env: 'probe-env'
     }]));
   });
 });

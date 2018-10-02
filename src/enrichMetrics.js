@@ -6,6 +6,7 @@ const enrichMetric = (metric, probeConfig) => {
   if (probeConfig.host) enriched.req_host = probeConfig.host;
   if (probeConfig.port) enriched.req_port = probeConfig.port;
   if (probeConfig.path) enriched.req_path = probeConfig.path;
+  if (probeConfig.probe_env) enriched.probe_env = probeConfig.probe_env;
   return enriched;
 };
 

@@ -11,28 +11,32 @@ const DEFAULT_EXPECTS = {
   }
 };
 module.exports = (cfg) => {
+  let result = {}
+  if (cfg.probe_env) {
+    result.probe_env = cfg.probe_env
+  }
   if (typeof cfg.url === 'string') {
     const url = new URL(cfg.url);
     const type = url.protocol.split(':')[0];
-    const result = {
+    Object.assign(result, {
       type,
       url: cfg.url,
       host: url.hostname,
       port: url.port || DEFAULT_PORTS[type],
       expect: cfg.expect || DEFAULT_EXPECTS[type]
-    };
+    })
     if (cfg.tls) {
       result.tls = cfg.tls;
     }
     if (typeof url.path === 'string' && url.path.length > 0) {
       result.path = url.path;
     }
-    return result;
   } else if (cfg.type === 'dns') {
-    return Object.assign({
+    Object.assign(result, {
       expect: {}
     }, cfg);
   } else {
-    return null;
+    result = null;
   }
+  return result;
 };

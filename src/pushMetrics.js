@@ -16,6 +16,7 @@ const probeLabelNames = [
   'probe_type',
   'probe_id',
   'probe_failed_expectations',
+  'probe_env',
   'instance',
   'instance_address',
   'socket_tls_protocol',
