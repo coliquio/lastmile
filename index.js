@@ -26,7 +26,9 @@ const evaluateMetrics = require('./src/evaluateMetrics');
 const run = async () => {
   try {
     const probesConfig = await loadProbesConfig(PROBES_CONFIG_URL);
-    const metrics = await probeAll(probesConfig);
+    const metrics = await probeAll(probesConfig, () => {
+      if (PROBE_ONE_SHOT) process.stdout.write('.')
+    });
     const enrichedMetrics = enrichMetrics(metrics, probesConfig);
     console.log(JSON.stringify(enrichedMetrics));
     if (!PUSHGATEWAY_DISABLED) {
