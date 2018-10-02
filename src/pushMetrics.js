@@ -48,9 +48,9 @@ module.exports = (config, metrics) => {
       instance: config.instance
     };
     if (config.instance_address) instanceLabels.instance_address = config.instance_address;
-    lastSeen.inc(instanceLabels, config.timestamp)
+    lastSeen.inc(instanceLabels, config.timestamp);
     metrics.forEach(metric => {
-      const labels = Object.assign({}, instanceLabels)
+      const labels = Object.assign({}, instanceLabels);
       probeLabelNames.forEach((labelName) => {
         if (typeof metric[labelName] !== 'undefined') labels[labelName] = String(metric[labelName]);
       });
