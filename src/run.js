@@ -3,23 +3,28 @@ const pushMetrics = require('./pushMetrics');
 const loadProbesConfig = require('./loadProbesConfig');
 const enrichMetrics = require('./enrichMetrics');
 
-module.exports = async (config) => {
+module.exports = async (config, modules = {
+  probeAll,
+  pushMetrics,
+  loadProbesConfig,
+  enrichMetrics
+}) => {
   try {
-    const probesConfig = await loadProbesConfig(config.probesConfigUrl);
-    const metrics = await probeAll(probesConfig, () => {
-      if (config.probeOneShot) process.stdout.write('.')
+    const probesConfig = await modules.loadProbesConfig(config.probesConfigUrl);
+    const metrics = await modules.probeAll(probesConfig, () => {
+      if (config.probeOneShot && config.log) process.stdout.write('.')
     });
-    const enrichedMetrics = enrichMetrics(metrics, probesConfig);
-    console.log(JSON.stringify(enrichedMetrics));
+    const enrichedMetrics = modules.enrichMetrics(metrics, probesConfig);
+    if (config.log) console.log(JSON.stringify(enrichedMetrics));
     if (!config.pushgatewayDisabled) {
       try {
-        await pushMetrics({
+        await modules.pushMetrics({
           url: config.pushgatewayUrl,
           auth: config.pushgatewayAuth,
           environment: config.environment,
           instance: config.instanceName,
           instance_address: config.instanceAddress,
-          timestamp: (new Date()).getTime()
+          timestamp: config.fakeTime || (new Date()).getTime()
         }, enrichedMetrics);
       } catch (e) {
         console.log(JSON.stringify({

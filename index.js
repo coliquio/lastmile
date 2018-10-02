@@ -8,6 +8,7 @@ process.on('SIGINT', function() {
 const os = require('os');
 
 const config = {
+  log: true,
   environment: process.env.ENVIRONMENT || 'test',
   instanceName: process.env.INSTANCE || os.hostname(),
   instanceAddress: process.env.INSTANCE_ADDRESS,
