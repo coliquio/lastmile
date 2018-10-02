@@ -7,65 +7,31 @@ process.on('SIGINT', function() {
 });
 const os = require('os');
 
-const PUSHGATEWAY_DISABLED = process.env.PUSHGATEWAY_DISABLED === 'yes';
-const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://localhost:9091';
-const PUSHGATEWAY_AUTH = process.env.PUSHGATEWAY_AUTH;
-const PROBES_CONFIG_URL = process.env.PROBES_CONFIG_URL || 'file://./example/probes.json';
-const INSTANCE = process.env.INSTANCE || os.hostname();
-const INSTANCE_ADDRESS = process.env.INSTANCE_ADDRESS;
-const ENVIRONMENT = process.env.ENVIRONMENT || 'test';
-const PROBE_INTERVAL = parseInt(process.env.PROBE_INTERVAL || '60000');
-const PROBE_ONE_SHOT = process.env.PROBE_ONE_SHOT === 'yes';
+const config = {
+  log: true,
+  environment: process.env.ENVIRONMENT || 'test',
+  instanceName: process.env.INSTANCE || os.hostname(),
+  instanceAddress: process.env.INSTANCE_ADDRESS,
+  probesConfigUrl: process.env.PROBES_CONFIG_URL || 'file://./example/probes.json',
+  probeOneShot: process.env.PROBE_ONE_SHOT === 'yes',
+  probeInterval: parseInt(process.env.PROBE_INTERVAL || '60000'),
+  pushgatewayDisabled: process.env.PUSHGATEWAY_DISABLED === 'yes',
+  pushgatewayUrl: process.env.PUSHGATEWAY_URL || 'http://localhost:9091',
+  pushgatewayAuth: process.env.PUSHGATEWAY_AUTH,
+}
 
-const probeAll = require('./src/probeAll');
-const pushMetrics = require('./src/pushMetrics');
-const loadProbesConfig = require('./src/loadProbesConfig');
-const enrichMetrics = require('./src/enrichMetrics');
+const run = require('./src/run');
 const evaluateMetrics = require('./src/evaluateMetrics');
 
-const run = async () => {
-  try {
-    const probesConfig = await loadProbesConfig(PROBES_CONFIG_URL);
-    const metrics = await probeAll(probesConfig, () => {
-      if (PROBE_ONE_SHOT) process.stdout.write('.')
-    });
-    const enrichedMetrics = enrichMetrics(metrics, probesConfig);
-    console.log(JSON.stringify(enrichedMetrics));
-    if (!PUSHGATEWAY_DISABLED) {
-      try {
-        await pushMetrics({
-          url: PUSHGATEWAY_URL,
-          auth: PUSHGATEWAY_AUTH,
-          environment: ENVIRONMENT,
-          instance: INSTANCE,
-          instance_address: INSTANCE_ADDRESS,
-          timestamp: (new Date()).getTime()
-        }, enrichedMetrics);
-      } catch (e) {
-        console.log(JSON.stringify({
-          priority: 'error',
-          message: 'ERROR could not publish metrics',
-          error: e
-        }));
-      }
-    }
-    return enrichedMetrics;
-  } catch (e) {
-    console.log(JSON.stringify({
-      priority: 'error',
-      error: e
-    }));
-  }
-};
-const result = run();
-if (PROBE_ONE_SHOT) {
-  result.then(metrics => {
+const firstRun = run(config);
+if (config.probeOneShot) {
+  firstRun.then(metrics => {
     const {status, exitCode} = evaluateMetrics(metrics);
     console.log(`Probes finished with status = ${status} (${exitCode})`);
     process.exit(exitCode);
   });
 } else {
   setInterval(() => {
-    run();
-  }, PROBE_INTERVAL);
+    run(config);
+  }, config.probeInterval);
 }
