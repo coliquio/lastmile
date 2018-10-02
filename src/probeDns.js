@@ -21,7 +21,7 @@ module.exports = (config) => {
           result.probe_status = probeStatus.error;
         }
       } else {
-        const addresses = rawAddresses.map(a => a.value);
+        const addresses = rawAddresses.map(a => a.value || a.address);
         result.res_addresses = addresses.join(',');
         if (config.expect.address && addresses.indexOf(config.expect.address) < 0) {
           result.probe_status = probeStatus.failedExpectation;
