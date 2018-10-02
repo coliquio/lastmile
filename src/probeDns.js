@@ -4,7 +4,7 @@ const dns = require('dns');
 module.exports = (config) => {
   return new Promise((resolve) => {
     const getDurationInMs = measureDurationInMs();
-    dns.resolve(config.host, config.rrtype || 'A', (err, addresses) => {
+    dns.resolveAny(config.host, (err, rawAddresses) => {
       const result = {
         duration: getDurationInMs()
       };
@@ -21,6 +21,7 @@ module.exports = (config) => {
           result.probe_status = probeStatus.error;
         }
       } else {
+        const addresses = rawAddresses.map(a => a.value);
         result.res_addresses = addresses.join(',');
         if (config.expect.address && addresses.indexOf(config.expect.address) < 0) {
           result.probe_status = probeStatus.failedExpectation;

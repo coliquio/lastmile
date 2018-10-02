@@ -18,7 +18,6 @@ describe('probeDns', () => {
   it('returns metrics with expectation', async () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
-      rrtype: 'CNAME',
       expect: {
         address: 's3-website.eu-central-1.amazonaws.com'
       }
@@ -27,14 +26,13 @@ describe('probeDns', () => {
     delete metrics.duration;
     assert.deepEqual({
       probe_status: 0,
-      'res_addresses': 's3-website.eu-central-1.amazonaws.com'
+      res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
   });
 
   it('returns metrics with failed expectations', async () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
-      rrtype: 'CNAME',
       expect: {
         address: 'this-does-not-match'
       }
