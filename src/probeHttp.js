@@ -12,7 +12,6 @@ module.exports = async (config) => {
     headers: {}
   };
   if (config.userAgent) options.headers['user-agent'] = config.userAgent;
-  console.log(config.userAgent);
   return new Promise((resolvePromise) => {
     let result = {};
     let timedOut = false;
