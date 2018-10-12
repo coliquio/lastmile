@@ -28,8 +28,8 @@ module.exports = (cfg) => {
     if (cfg.tls) {
       result.tls = cfg.tls;
     }
-    if (typeof url.path === 'string' && url.path.length > 0) {
-      result.path = url.path;
+    if (typeof url.pathname === 'string' && url.pathname.length > 0) {
+      result.path = url.pathname;
     }
   } else if (cfg.type === 'dns') {
     Object.assign(result, {

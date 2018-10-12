@@ -7,7 +7,7 @@ module.exports = async (config) => {
   const options = {
     host: config.host,
     port: config.port,
-    path: config.path || '/',
+    path: config.path,
     method: config.method || 'GET',
     headers: {}
   };

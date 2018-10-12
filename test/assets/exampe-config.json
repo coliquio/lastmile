@@ -1,4 +1,4 @@
 [
-  { "url": "http://example.com" },
+  { "url": "http://example.com/foo/bar" },
   { "url": "https://example.com" }
 ]

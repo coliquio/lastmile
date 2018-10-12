@@ -1,33 +1,50 @@
 const parseProbeConfig = require('../src/parseProbeConfig');
 const assert = require('assert');
 describe('parseProbeConfig', () => {
-  it('parses http probe config', () => {
+  it('parses http probe config without path', () => {
     assert.deepEqual({
       url: 'http://example.com',
       type: 'http',
       host: 'example.com',
       probe_env: 'probe-env',
       port: '80',
+      path: '/',
       expect: {
         statusCode: '2[0-9][0-9]'
       }
     }, parseProbeConfig({url: 'http://example.com', probe_env: 'probe-env'}));
   });
 
+  it('parses http probe config', () => {
+    assert.deepEqual({
+      url: 'http://example.com/foo/bar',
+      type: 'http',
+      host: 'example.com',
+      probe_env: 'probe-env',
+      port: '80',
+      path: '/foo/bar',
+      expect: {
+        statusCode: '2[0-9][0-9]'
+      }
+    }, parseProbeConfig({url: 'http://example.com/foo/bar', probe_env: 'probe-env'}));
+  });
+
+
   it('parses https probe config', () => {
     assert.deepEqual({
-      url: 'https://example.com',
+      url: 'https://example.com/foo/bar',
       type: 'https',
       host: 'example.com',
       probe_env: 'probe-env',
       port: '443',
+      path: '/foo/bar',
       expect: {
         statusCode: '2[0-9][0-9]'
       },
       tls: {
         ca: 'tls-ca-cert'
       }
-    }, parseProbeConfig({url: 'https://example.com', tls: {ca: 'tls-ca-cert'}, probe_env: 'probe-env'}));
+    }, parseProbeConfig({url: 'https://example.com/foo/bar', tls: {ca: 'tls-ca-cert'}, probe_env: 'probe-env'}));
   });
 
   it('parses dns probe config', () => {
