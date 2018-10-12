@@ -8,11 +8,13 @@ const fs = require('fs');
 describe('probeHttps', () => {
   describe('cert-with-trusted-ca', () => {
     let server;
+    let lastReqUserAgent;
     beforeEach((done) => {
       const privateKey  = fs.readFileSync('test/assets/https-certs/https.srv.key', 'utf8');
       const certificate = fs.readFileSync('test/assets/https-certs/https.srv.crt', 'utf8');
       const app = express();
       app.get('/simulate/ok', (req, res) => {
+        lastReqUserAgent = req.get('user-agent');
         res.status(200).send({hello: 'world'});
       });
       app.get('/simulate/500', (req, res) => {
@@ -56,6 +58,22 @@ describe('probeHttps', () => {
         socket_src_address: '127.0.0.1',
         socket_tls_procotol: 'TLSv1.2'
       }, metrics);
+    });
+
+    it('sends user-agent header', async () => {
+      await probeHttps({
+        host: 'localhost',
+        port: server.address().port,
+        path: '/simulate/ok',
+        expect: {
+          statusCode: 200
+        },
+        tls: {
+          ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
+        },
+        userAgent: 'user-agent-foo'
+      });
+      assert.equal(lastReqUserAgent, 'user-agent-foo');
     });
     
     it('returns metrics with failed expectation', async () => {

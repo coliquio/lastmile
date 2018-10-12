@@ -29,7 +29,18 @@ const parseConfig = (configJson) => {
   });
 };
 
-module.exports = async (url) => {
+const enrichConfig = (probesConfigs, defaultConfig) => {
+  return probesConfigs.map(cfg => {
+    if (cfg.type === 'http' || cfg.type === 'https') {
+      if (defaultConfig.userAgent) cfg.userAgent = defaultConfig.userAgent;
+    }
+    return cfg;
+  });
+};
+
+module.exports = async (url, defaultConfig) => {
   const config = await loadConfig(url);
-  return Promise.resolve(parseConfig(config));
+  const parsedConfig = parseConfig(config);
+  const enrichedConfig = enrichConfig(parsedConfig, defaultConfig);
+  return Promise.resolve(enrichedConfig);
 };

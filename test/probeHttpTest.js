@@ -5,9 +5,11 @@ const probeStatus = require('../src/probeStatus');
 
 describe('probeHttp', () => {
   let server;
+  let lastReqUserAgent;
   beforeEach((done) => {
     const app = express();
     app.get('/simulate/ok', (req, res) => {
+      lastReqUserAgent = req.get('user-agent');
       res.status(200).send({hello: 'world'});
     });
     app.get('/simulate/500', (req, res) => {
@@ -43,6 +45,19 @@ describe('probeHttp', () => {
       socket_src_family: 'IPv4',
       socket_src_address: '127.0.0.1'
     }, metrics);
+  });
+
+  it('sends user-agent header', async () => {
+    await probeHttp({
+      host: 'localhost',
+      port: server.address().port,
+      path: '/simulate/ok',
+      expect: {
+        statusCode: 200
+      },
+      userAgent: 'user-agent-foo'
+    });
+    assert.equal(lastReqUserAgent, 'user-agent-foo');
   });
 
   it('returns metrics with failed expectations', async () => {

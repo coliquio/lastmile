@@ -8,38 +8,39 @@ describe('run', () => {
       probeAll: {},
       enrichMetrics: {},
       pushMetrics: {}
-    }
+    };
     const mockModules = {
-      loadProbesConfig: (url) => {
+      loadProbesConfig: (url, defaultConfig) => {
         mockModulesResults.loadProbesConfig.url = url;
-        return [{url: 'http://example.com'}]
+        return [{url: 'http://example.com', userAgent: defaultConfig.userAgent}];
       },
       probeAll: (probesConfig, onProgress) => {
-        mockModulesResults.probeAll.probesConfig = probesConfig
-        mockModulesResults.probeAll.onProgress = onProgress
-        return [{res_code: 200}]
+        mockModulesResults.probeAll.probesConfig = probesConfig;
+        mockModulesResults.probeAll.onProgress = onProgress;
+        return [{res_code: 200}];
       },
       enrichMetrics: (metrics, probeConfig) => {
-        mockModulesResults.enrichMetrics.metrics = metrics
-        mockModulesResults.enrichMetrics.probeConfig = probeConfig
-        return [{enriched: true}]
+        mockModulesResults.enrichMetrics.metrics = metrics;
+        mockModulesResults.enrichMetrics.probeConfig = probeConfig;
+        return [{enriched: true}];
       },
       pushMetrics: (config, metrics) => {
-        mockModulesResults.pushMetrics.config = config
-        mockModulesResults.pushMetrics.metrics = metrics
+        mockModulesResults.pushMetrics.config = config;
+        mockModulesResults.pushMetrics.metrics = metrics;
         return;
       }
-    }
+    };
     const result = await run({
       probesConfigUrl: 'file://./probe_config.json',
+      userAgent: 'test-user-agent',
       fakeTime: 1337
-    }, mockModules)
-    assert.deepEqual('file://./probe_config.json', mockModulesResults.loadProbesConfig.url)
-    assert.deepEqual([{url: 'http://example.com'}], mockModulesResults.probeAll.probesConfig)
-    assert.deepEqual('function', typeof mockModulesResults.probeAll.onProgress)
-    assert.deepEqual([{res_code: 200}], mockModulesResults.enrichMetrics.metrics)
-    assert.deepEqual([{url: 'http://example.com'}], mockModulesResults.enrichMetrics.probeConfig)
-    assert.deepEqual([{enriched: true}], result)
+    }, mockModules);
+    assert.deepEqual('file://./probe_config.json', mockModulesResults.loadProbesConfig.url);
+    assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent'}], mockModulesResults.probeAll.probesConfig);
+    assert.deepEqual('function', typeof mockModulesResults.probeAll.onProgress);
+    assert.deepEqual([{res_code: 200}], mockModulesResults.enrichMetrics.metrics);
+    assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent'}], mockModulesResults.enrichMetrics.probeConfig);
+    assert.deepEqual([{enriched: true}], result);
     assert.deepEqual({
       url: undefined,
       auth: undefined,
@@ -47,7 +48,7 @@ describe('run', () => {
       instance: undefined,
       instance_address: undefined,
       timestamp: 1337
-    }, mockModulesResults.pushMetrics.config)
-    assert.deepEqual([{enriched: true}], mockModulesResults.pushMetrics.metrics)
-  })
-})
+    }, mockModulesResults.pushMetrics.config);
+    assert.deepEqual([{enriched: true}], mockModulesResults.pushMetrics.metrics);
+  });
+});

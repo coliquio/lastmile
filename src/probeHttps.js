@@ -8,8 +8,10 @@ module.exports = async (config) => {
     host: config.host,
     port: config.port,
     path: config.path || '/',
-    method: config.method || 'GET'
+    method: config.method || 'GET',
+    headers: {}
   };
+  if (config.userAgent) options.headers['user-agent'] = config.userAgent;
   if (typeof config.tls === 'object' && typeof config.tls.ca === 'string') {
     options.agent = new https.Agent({
       ca: config.tls.ca

@@ -8,8 +8,11 @@ module.exports = async (config) => {
     host: config.host,
     port: config.port,
     path: config.path || '/',
-    method: config.method || 'GET'
+    method: config.method || 'GET',
+    headers: {}
   };
+  if (config.userAgent) options.headers['user-agent'] = config.userAgent;
+  console.log(config.userAgent);
   return new Promise((resolvePromise) => {
     let result = {};
     let timedOut = false;

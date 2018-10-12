@@ -11,9 +11,9 @@ const DEFAULT_EXPECTS = {
   }
 };
 module.exports = (cfg) => {
-  let result = {}
+  let result = {};
   if (cfg.probe_env) {
-    result.probe_env = cfg.probe_env
+    result.probe_env = cfg.probe_env;
   }
   if (typeof cfg.url === 'string') {
     const url = new URL(cfg.url);
@@ -24,7 +24,7 @@ module.exports = (cfg) => {
       host: url.hostname,
       port: url.port || DEFAULT_PORTS[type],
       expect: cfg.expect || DEFAULT_EXPECTS[type]
-    })
+    });
     if (cfg.tls) {
       result.tls = cfg.tls;
     }

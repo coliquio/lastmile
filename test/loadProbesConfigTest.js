@@ -21,19 +21,21 @@ describe('loadProbesConfig', () => {
     });
     
     it('returns parsed config', async () => {
-      const config = await loadProbesConfig(`http://localhost:${server.address().port}/config`);
+      const config = await loadProbesConfig(`http://localhost:${server.address().port}/config`, {userAgent: 'test-user-agent'});
       assert.deepEqual([
         {
           url: 'http://example.com:8080', type: 'http', host: 'example.com', port: '8080',
           expect: {
             statusCode: '2[0-9][0-9]'
-          }
+          },
+          'userAgent': 'test-user-agent'
         },
         {
           url: 'https://example.com:8443', type: 'https', host: 'example.com', port: '8443',
           expect: {
             statusCode: '2[0-9][0-9]'
-          }
+          },
+          'userAgent': 'test-user-agent'
         },
         {
           type: 'dns', host: 'example.com',
@@ -44,19 +46,21 @@ describe('loadProbesConfig', () => {
   });
   describe('file', () => {
     it('returns parsed config', async () => {
-      const config = await loadProbesConfig('file://test/assets/exampe-config.json');
+      const config = await loadProbesConfig('file://test/assets/exampe-config.json', {userAgent: 'test-user-agent'});
       assert.deepEqual([
         {
           url: 'http://example.com', type: 'http', host: 'example.com', port: '80',
           expect: {
             statusCode: '2[0-9][0-9]'
-          }
+          },
+          'userAgent': 'test-user-agent'
         },
         {
           url: 'https://example.com', type: 'https', host: 'example.com', port: '443',
           expect: {
             statusCode: '2[0-9][0-9]'
-          }
+          },
+          'userAgent': 'test-user-agent'
         }
       ], config);
     });
