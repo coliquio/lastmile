@@ -26,6 +26,9 @@ module.exports = (config) => {
         if (config.expect.address && addresses.indexOf(config.expect.address) < 0) {
           result.probe_status = probeStatus.failedExpectation;
           result.probe_failed_expectations = 'ADDRESS';
+        } else if (config.expect.err_code) {
+          result.probe_status = probeStatus.failedExpectation;
+          result.probe_failed_expectations = 'ERR_CODE';
         } else {
           result.probe_status = probeStatus.ok;
         }

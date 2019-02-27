@@ -89,4 +89,20 @@ describe('probeDns', () => {
       probe_failed_expectations: 'ERR_CODE'
     }, metrics);
   });
+  
+  it('returns metrics for unexpected resolve success', async () => {
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      expect: {
+        err_code: 'ENOTFOUND'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 1,
+      probe_failed_expectations: 'ERR_CODE',
+      res_addresses: 's3-website.eu-central-1.amazonaws.com'
+    }, metrics);
+  });
 });
