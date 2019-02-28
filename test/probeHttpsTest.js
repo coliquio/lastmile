@@ -41,7 +41,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/ok',
         expect: {
-          statusCode: 200
+          status_code: 200
         },
         tls: {
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
@@ -66,7 +66,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/ok',
         expect: {
-          statusCode: 200
+          status_code: 200
         },
         tls: {
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
@@ -82,7 +82,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/500',
         expect: {
-          statusCode: 200
+          status_code: 200
         },
         tls: {
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
@@ -108,7 +108,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/timeout',
         expect: {
-          statusCode: 200
+          status_code: 200
         },
         tls: {
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8') 
@@ -129,7 +129,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/ok',
         expect: {
-          statusCode: 200
+          status_code: 200
         },
         tls: {
           ca: fs.readFileSync('test/assets/https-certs/https.ca.crt', 'utf8')
@@ -169,7 +169,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/ok',
         expect: {
-          statusCode: 200
+          status_code: 200
         }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
@@ -206,7 +206,7 @@ describe('probeHttps', () => {
         port: server.address().port,
         path: '/simulate/ok',
         expect: {
-          statusCode: 200
+          status_code: 200
         }
       });
       assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);

@@ -26,7 +26,7 @@ describe('loadProbesConfig', () => {
         {
           url: 'http://example.com:8080/foo/baz', type: 'http', host: 'example.com', port: '8080',
           expect: {
-            statusCode: '2[0-9][0-9]'
+            status_code: '2[0-9][0-9]'
           },
           path: '/foo/baz',
           'userAgent': 'test-user-agent'
@@ -34,7 +34,7 @@ describe('loadProbesConfig', () => {
         {
           url: 'https://example.com:8443', type: 'https', host: 'example.com', port: '8443',
           expect: {
-            statusCode: '2[0-9][0-9]'
+            status_code: '2[0-9][0-9]'
           },
           path: '/',
           'userAgent': 'test-user-agent'
@@ -53,7 +53,7 @@ describe('loadProbesConfig', () => {
         {
           url: 'http://example.com/foo/bar', type: 'http', host: 'example.com', port: '80',
           expect: {
-            statusCode: '2[0-9][0-9]'
+            status_code: '2[0-9][0-9]'
           },
           path: '/foo/bar',
           'userAgent': 'test-user-agent'
@@ -61,7 +61,7 @@ describe('loadProbesConfig', () => {
         {
           url: 'https://example.com', type: 'https', host: 'example.com', port: '443',
           expect: {
-            statusCode: '2[0-9][0-9]'
+            status_code: '2[0-9][0-9]'
           },
           path: '/',
           'userAgent': 'test-user-agent'

@@ -3,7 +3,7 @@ const probeStatus = require('./probeStatus');
 
 const matchHttpExpectation = (probeConfig, response) => {
   const failedExpectations = [];
-  if (`${response.statusCode}`.match(probeConfig.expect.statusCode) === null) {
+  if (`${response.statusCode}`.match(probeConfig.expect.status_code) === null) {
     failedExpectations.push('RES_STATUS');
   }
   return {

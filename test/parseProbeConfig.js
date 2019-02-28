@@ -10,7 +10,7 @@ describe('parseProbeConfig', () => {
       port: '80',
       path: '/',
       expect: {
-        statusCode: '2[0-9][0-9]'
+        status_code: '2[0-9][0-9]'
       }
     }, parseProbeConfig({url: 'http://example.com', probe_env: 'probe-env'}));
   });
@@ -24,7 +24,7 @@ describe('parseProbeConfig', () => {
       port: '80',
       path: '/foo/bar',
       expect: {
-        statusCode: '2[0-9][0-9]'
+        status_code: '2[0-9][0-9]'
       }
     }, parseProbeConfig({url: 'http://example.com/foo/bar', probe_env: 'probe-env'}));
   });
@@ -39,7 +39,7 @@ describe('parseProbeConfig', () => {
       port: '443',
       path: '/foo/bar',
       expect: {
-        statusCode: '2[0-9][0-9]'
+        status_code: '2[0-9][0-9]'
       },
       tls: {
         ca: 'tls-ca-cert'

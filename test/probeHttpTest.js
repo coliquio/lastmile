@@ -32,7 +32,7 @@ describe('probeHttp', () => {
       port: server.address().port,
       path: '/simulate/ok',
       expect: {
-        statusCode: 200
+        status_code: 200
       }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
@@ -53,7 +53,7 @@ describe('probeHttp', () => {
       port: server.address().port,
       path: '/simulate/ok',
       expect: {
-        statusCode: 200
+        status_code: 200
       },
       userAgent: 'user-agent-foo'
     });
@@ -66,7 +66,7 @@ describe('probeHttp', () => {
       port: server.address().port,
       path: '/simulate/500',
       expect: {
-        statusCode: 200
+        status_code: 200
       }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
@@ -122,7 +122,7 @@ describe('probeHttp', () => {
       port: 60000,
       path: '/',
       expect: {
-        statusCode: '200'
+        status_code: '200'
       }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
@@ -140,7 +140,7 @@ describe('probeHttp', () => {
       path: '/simulate/timeout',
       timeout: 500,
       expect: {
-        statusCode: 200
+        status_code: 200
       }
     });
     assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);

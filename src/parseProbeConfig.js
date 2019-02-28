@@ -4,10 +4,10 @@ const DEFAULT_PORTS = {
 };
 const DEFAULT_EXPECTS = {
   http: {
-    statusCode: '2[0-9][0-9]'
+    status_code: '2[0-9][0-9]'
   },
   https: {
-    statusCode: '2[0-9][0-9]'
+    status_code: '2[0-9][0-9]'
   }
 };
 module.exports = (cfg) => {
