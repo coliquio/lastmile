@@ -21,6 +21,10 @@ This installs to root crontab.
 
     docker-compose up
 
+## Run local `example/probes.json` without prometheus
+
+    npm run example
+
 ## CI Environment
 
 ![https://travis-ci.com/coliquio/lastmile.svg?branch=master](https://travis-ci.com/coliquio/lastmile.svg?branch=master)

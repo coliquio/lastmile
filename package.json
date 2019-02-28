@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx mocha",
-    "lint": "npx eslint --fix ."
+    "lint": "npx eslint --fix .",
+    "example": "PROBE_ONE_SHOT=yes PUSHGATEWAY_DISABLED=yes node ./index.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,6 @@
 [
   { "url": "http://example.com" },
   { "url": "https://example.com" },
+  { "url": "http://localhost:60000", "expect": { "err_code": "ECONNREFUSED" } },
   { "type": "dns", "host": "example.com" }
 ]

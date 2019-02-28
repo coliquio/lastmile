@@ -11,9 +11,11 @@ module.exports = async (config, modules = {
 }) => {
   try {
     const probesConfig = await modules.loadProbesConfig(config.probesConfigUrl, {userAgent: config.userAgent});
+    if (config.probeOneShot && config.log) process.stdout.write('[RUN]\n');
     const metrics = await modules.probeAll(probesConfig, () => {
       if (config.probeOneShot && config.log) process.stdout.write('.');
     });
+    if (config.probeOneShot && config.log) process.stdout.write('\n[DONE]\n');
     const enrichedMetrics = modules.enrichMetrics(metrics, probesConfig);
     if (config.log) console.log(JSON.stringify(enrichedMetrics));
     if (!config.pushgatewayDisabled) {
