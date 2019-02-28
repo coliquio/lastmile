@@ -1,6 +1,27 @@
 const measureDurationInMs = require('./measureDurationInMs');
 const probeStatus = require('./probeStatus');
-const matchHttpExpectation = require('./matchHttpExpectation');
+
+const matchHttpExpectation = (probeConfig, response) => {
+  const failedExpectations = [];
+  if (`${response.statusCode}`.match(probeConfig.expect.statusCode) === null) {
+    failedExpectations.push('RES_STATUS');
+  }
+  return {
+    ok: failedExpectations.length === 0,
+    failedExpectations
+  };
+};
+
+const matchHttpErrorExpectation = (config, error) => {
+  if (config.expect && config.expect.err_code) {
+    // did expect error, therefore either status ok or status failed expectation (== just wrong error)
+    return config.expect.err_code == error.code ? probeStatus.ok : probeStatus.failedExpectation;
+  } else {
+    // did not expect error, therefore status error
+    return probeStatus.error;
+  }
+};
+
 module.exports = httpOrHttps => async (config) => {
   const getDurationInMs = measureDurationInMs();
   const options = {
@@ -44,7 +65,7 @@ module.exports = httpOrHttps => async (config) => {
     });
     request.on('error', (e) => {
       resolve(Object.assign({
-        probe_status: probeStatus.error,
+        probe_status: matchHttpErrorExpectation(config, e),
         err_code: timedOut ? 'TIMEOUT' : e.code,
         duration: getDurationInMs()
       }, result));

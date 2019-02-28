@@ -82,6 +82,57 @@ describe('probeHttp', () => {
     }, metrics);
   });
 
+  it('returns metrics for refused port', async () => {
+    const metrics = await probeHttp({
+      host: 'localhost',
+      port: 60000,
+      path: '/',
+      expect: {
+        err_code: 'ECONNREFUSED'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: probeStatus.ok,
+      err_code: 'ECONNREFUSED'
+    }, metrics);
+  });
+
+  it('returns metrics for failed expecation of timeout but instead refused port', async () => {
+    const metrics = await probeHttp({
+      host: 'localhost',
+      port: 60000,
+      path: '/',
+      expect: {
+        err_code: 'TIMEOUT'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: probeStatus.failedExpectation,
+      err_code: 'ECONNREFUSED'
+    }, metrics);
+  });
+
+  it('returns metrics for error of successful response but instead refused port', async () => {
+    const metrics = await probeHttp({
+      host: 'localhost',
+      port: 60000,
+      path: '/',
+      expect: {
+        statusCode: '200'
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: probeStatus.error,
+      err_code: 'ECONNREFUSED'
+    }, metrics);
+  });
+
   it('returns metrics for timeout', async () => {
     const metrics = await probeHttp({
       host: 'localhost',
