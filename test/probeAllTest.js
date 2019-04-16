@@ -19,8 +19,12 @@ describe('probeAll', () => {
   });
 
   describe('performance', function() {
-    this.timeout(100)
+    // set threshold very low to about 100ms
+    this.timeout(100) 
 
+    // run 10x probes a 20ms
+    // - sequence would take about 200ms and run into timeout (TEST FAIL)
+    // - parallel would take about 20ms + overhead and not run into timeout (TEST PASS)
     it('runs slow probes in parallel', async () => {
       const probeMock = () => {
         return new Promise((resolve) => {
