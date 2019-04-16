@@ -1,10 +1,9 @@
-const probe = require('./probe');
-module.exports = async (probesConfig, onProgress) => {
-  let metrics = [];
-  for (const probeConfig of probesConfig) {
-    const metric = await probe(probeConfig);
-    metrics.push(metric);
-    onProgress(metric);
-  }
-  return Promise.resolve(metrics);
+const _probe = require('./probe');
+module.exports = async (probesConfig, onProgress, probe=_probe) => {
+  return Promise.all(probesConfig.map(probeConfig => {
+    return probe(probeConfig).then(metric => {
+      onProgress(metric)
+      return metric
+    })
+  }))
 };
