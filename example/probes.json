@@ -1,6 +1,7 @@
 [
   { "url": "http://example.com" },
-  { "url": "https://example.com" },
+  { "url": "https://example.com", "timeout": 60000 },
   { "url": "http://localhost:60000", "expect": { "err_code": "ECONNREFUSED" } },
-  { "type": "dns", "host": "example.com" }
+  { "type": "dns", "host": "example.com" },
+  { "type": "dns", "host": "www.example.com", "timeout": 60000 }
 ]
