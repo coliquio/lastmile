@@ -25,6 +25,26 @@ This installs to root crontab.
 
     npm run example
 
+## Probe Configuration
+
+### HTTP
+
+```json
+{ "url": "http://example.com" }
+```
+
+### HTTPS
+
+```json
+{ "url": "https://example.com" }
+```
+
+### DNS
+
+```json
+{ "type": "dns", "host": "www.example.com" }
+```
+
 ## CI Environment
 
 ![https://travis-ci.com/coliquio/lastmile.svg?branch=master](https://travis-ci.com/coliquio/lastmile.svg?branch=master)
