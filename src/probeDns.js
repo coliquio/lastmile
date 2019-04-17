@@ -1,14 +1,23 @@
 const measureDurationInMs = require('./measureDurationInMs');
 const probeStatus = require('./probeStatus');
-const dns = require('dns');
-module.exports = (config) => {
-  return new Promise((resolve) => {
+const { Resolver } = require('dns');
+module.exports = (config, DNSResolver = Resolver) => {
+  return new Promise((resolvePromise) => {
+    let timedOut = false;
+    const resolve = (value) => {
+      clearTimeout(timeout);
+      resolvePromise(value);
+    };
     const getDurationInMs = measureDurationInMs();
-    dns.resolveAny(config.host, (err, rawAddresses) => {
+    const resolver = new DNSResolver();
+    resolver.resolveAny(config.host, (err, rawAddresses) => {
       const result = {
         duration: getDurationInMs()
       };
-      if (err) {
+      if (timedOut) {
+        result.err_code = 'TIMEOUT';
+        result.probe_status = probeStatus.error
+      } else if (err) {
         result.err_code = err.code;
         if (config.expect.err_code) {
           if (config.expect.err_code == err.code) {
@@ -35,5 +44,9 @@ module.exports = (config) => {
       }
       resolve(result);
     });
+    const timeout = setTimeout(() => {
+      timedOut = true;
+      resolver.cancel();
+    }, config.timeout || 5000);
   });
 };

@@ -105,4 +105,32 @@ describe('probeDns', () => {
       res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
   });
+
+  it('returns metrics for timeout', async () => {
+    class ResolverMock {
+      resolveAny(host, callback) {
+        setTimeout(() => {
+          callback()
+        }, 1000)
+      }
+      cancel() {
+        ResolverMock.cancelled = true
+      }
+    }
+    ResolverMock.cancelled = false
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      expect: {
+        err_code: 'TIMEOUT'
+      },
+      timeout: 500
+    }, ResolverMock);
+    assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    assert.deepEqual({
+      probe_status: 2,
+      err_code: 'TIMEOUT'
+    }, metrics);
+    assert.deepEqual(ResolverMock.cancelled, true)
+  });
 });
