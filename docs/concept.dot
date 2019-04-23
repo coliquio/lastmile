@@ -11,15 +11,15 @@ digraph g {
     label="monitoring env"
 
     prometheus -> prometheus_pushgateway [label=pull]
-    "http_reverseproxy\n(https + basic_auth)" -> prometheus_pushgateway
-    "http_reverseproxy\n(https + basic_auth)"
+    http_reverseproxy -> prometheus_pushgateway
+    http_reverseproxy
   }
 
   subgraph cluster_3 {
     label="edge location"
 
     lastmile [fillcolor="lightblue",style=filled]
-    lastmile -> "http_reverseproxy\n(https + basic_auth)" [label="push"]
+    lastmile -> http_reverseproxy [label="push (https + basic-auth)"]
     lastmile -> dns_servers [label="monitors"]
     lastmile -> http_apps
   }
