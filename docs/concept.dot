@@ -1,0 +1,26 @@
+digraph g {
+
+  subgraph cluster_1 {
+    label="production env"
+
+    dns_servers
+    http_apps
+  }
+
+  subgraph cluster_2 {
+    label="monitoring env"
+
+    prometheus -> prometheus_pushgateway [label=pull]
+    "http_reverseproxy\n(https + basic_auth)" -> prometheus_pushgateway
+    "http_reverseproxy\n(https + basic_auth)"
+  }
+
+  subgraph cluster_3 {
+    label="edge location"
+
+    lastmile [fillcolor="lightblue",style=filled]
+    lastmile -> "http_reverseproxy\n(https + basic_auth)" [label="push"]
+    lastmile -> dns_servers [label="monitors"]
+    lastmile -> http_apps
+  }
+}

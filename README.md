@@ -4,6 +4,8 @@
 
 Monitors edge location connectivity and reports back to central prometheus.
 
+![docs/concept.png](docs/concept.png)
+
 ## Install as Cron service
 
 This installs to root crontab.
