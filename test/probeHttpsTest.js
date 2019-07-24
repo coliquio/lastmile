@@ -56,7 +56,7 @@ describe('probeHttps', () => {
         socket_dst_address: '127.0.0.1',
         socket_src_family: 'IPv4',
         socket_src_address: '127.0.0.1',
-        socket_tls_procotol: 'TLSv1.2'
+        socket_tls_procotol: 'TLSv1.3'
       }, metrics);
     });
 
@@ -98,7 +98,7 @@ describe('probeHttps', () => {
         socket_dst_address: '127.0.0.1',
         socket_src_family: 'IPv4',
         socket_src_address: '127.0.0.1',
-        socket_tls_procotol: 'TLSv1.2'
+        socket_tls_procotol: 'TLSv1.3'
       }, metrics);
     });
 
