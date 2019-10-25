@@ -9,7 +9,7 @@
     "example": "PROBE_ONE_SHOT=yes PUSHGATEWAY_DISABLED=yes node ./index.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.18.1",
     "prom-client": "^11.5.3"
