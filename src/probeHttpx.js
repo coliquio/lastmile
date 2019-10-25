@@ -22,7 +22,7 @@ const matchHttpErrorExpectation = (config, error) => {
   }
 };
 
-module.exports = httpOrHttps => async (config) => {
+module.exports = httpOrHttps => (config) => {
   const getDurationInMs = measureDurationInMs();
   const options = {
     host: config.host,
