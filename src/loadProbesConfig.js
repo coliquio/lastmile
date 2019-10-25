@@ -7,10 +7,9 @@ const loadConfigFromFile = (path) => {
 };
 
 const loadConfigFromHttp = (url) => {
-  return axios.get(url)
-    .then(res => {
-      return res.data;
-    });
+  return axios.get(url).then(res => {
+    return res.data;
+  });
 };
 
 const loadConfig = async (url) => {

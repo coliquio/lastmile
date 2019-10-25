@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:13-alpine
 
 ARG GIT_REF
 ENV GIT_REF ${GIT_REF}
