@@ -28,6 +28,9 @@ module.exports = (cfg) => {
     if (cfg.tls) {
       result.tls = cfg.tls;
     }
+    if (cfg.auth) {
+      result.auth = cfg.auth;
+    }
     if (typeof url.pathname === 'string' && url.pathname.length > 0) {
       result.path = url.pathname;
     }

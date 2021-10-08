@@ -37,6 +37,9 @@ module.exports = httpOrHttps => (config) => {
       ca: config.tls.ca
     });
   }
+  if (typeof config.auth === 'object' && typeof config.auth.username === 'string' && typeof config.auth.password === 'string') {
+    options.auth = `${config.auth.username}:${config.auth.password}`;
+  }    
   return new Promise((resolvePromise) => {
     let result = {};
     let timedOut = false;
