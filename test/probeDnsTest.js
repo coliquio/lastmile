@@ -110,14 +110,14 @@ describe('probeDns', () => {
     class ResolverMock {
       resolveAny(host, callback) {
         setTimeout(() => {
-          callback()
-        }, 1000)
+          callback();
+        }, 1000);
       }
       cancel() {
-        ResolverMock.cancelled = true
+        ResolverMock.cancelled = true;
       }
     }
-    ResolverMock.cancelled = false
+    ResolverMock.cancelled = false;
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
       expect: {
@@ -131,6 +131,6 @@ describe('probeDns', () => {
       probe_status: 2,
       err_code: 'TIMEOUT'
     }, metrics);
-    assert.deepEqual(ResolverMock.cancelled, true)
+    assert.deepEqual(ResolverMock.cancelled, true);
   });
 });

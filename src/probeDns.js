@@ -16,7 +16,7 @@ module.exports = (config, DNSResolver = Resolver) => {
       };
       if (timedOut) {
         result.err_code = 'TIMEOUT';
-        result.probe_status = probeStatus.error
+        result.probe_status = probeStatus.error;
       } else if (err) {
         result.err_code = err.code;
         if (config.expect.err_code) {
