@@ -1,9 +1,9 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 const axios = require('axios');
 const parseProbeConfig = require('./parseProbeConfig');
 
-const loadConfigFromFile = (path) => {
-  return JSON.parse(fs.readFileSync(path, 'utf8'));
+const loadConfigFromFile = async (path) => {
+  return JSON.parse(await fs.readFile(path, 'utf8'));
 };
 
 const loadConfigFromHttp = (url) => {
@@ -23,9 +23,7 @@ const loadConfig = async (url) => {
 };
 
 const parseConfig = (configJson) => {
-  return configJson.map(cfg => {
-    return parseProbeConfig(cfg);
-  });
+  return configJson.map(cfg => parseProbeConfig(cfg))
 };
 
 const enrichConfig = (probesConfigs, defaultConfig) => {
