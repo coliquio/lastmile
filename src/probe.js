@@ -5,14 +5,19 @@ const probeInvalid = require('./probeInvalid');
 
 module.exports = (probeConfig) => {
   let result;
-  if (probeConfig.type === 'http') {
-    result = probeHttp(probeConfig);
-  } else if (probeConfig.type === 'https') {
-    result = probeHttps(probeConfig);
-  } else if (probeConfig.type === 'dns') {
-    result = probeDns(probeConfig);
-  } else {
-    result = probeInvalid(probeConfig);
+  switch (probeConfig.typ) {
+    case 'http':
+      result = probeHttp(probeConfig);
+      break;
+    case 'https':
+      result = probeConfig(probeConfig);
+      break;
+    case 'dns':
+      result = probeDns(probeConfig);
+      break;
+    default:
+      result = probeInvalid(probeConfig);
+      break;
   }
   return result;
 };
