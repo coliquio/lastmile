@@ -135,7 +135,7 @@ describe('probeDns', () => {
     assert.deepEqual(ResolverMock.cancelled, true);
   });
 
-  it('returns metrics for broken custom dns_resolver ENODATA', async () => {
+  it('returns metrics for broken custom dns_resolver ECONNREFUSED', async () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
       expect: {},
@@ -145,7 +145,7 @@ describe('probeDns', () => {
     delete metrics.duration;
     delete metrics.res_addresses;
     assert.deepEqual({
-      err_code: 'ENODATA',
+      err_code: 'ECONNREFUSED',
       probe_status: probeStatus.error
     }, metrics);
   });

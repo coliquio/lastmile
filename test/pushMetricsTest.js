@@ -69,7 +69,7 @@ describe('pushMetrics', () => {
         probe_id: 'https://example.com/foo',
         probe_env: 'producation',
         dns_resolvers: ['8.8.8.8', '9.9.9.9'],
-        probe_label: 'custom-dns'
+        probe_name: 'custom-dns'
       },
       {
         protocol: 'dns',
