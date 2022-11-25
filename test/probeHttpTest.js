@@ -150,4 +150,28 @@ describe('probeHttp', () => {
       err_code: 'TIMEOUT',
     }, metrics);
   });
+
+  it('returns metrics for custom dns_resolver', async () => {
+    const metrics = await probeHttp({
+      host: 'www.example.com',
+      port: '80',
+      path: '/',
+      expect: {
+        status_code: 200
+      },
+      root: {
+        dns_resolvers: ['8.8.8.8']
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    delete metrics.socket_dst_address;
+    delete metrics.socket_src_address;
+    assert.deepEqual({
+      probe_status: probeStatus.ok,
+      res_status: 200,
+      socket_dst_family: 'IPv4',
+      socket_src_family: 'IPv4',
+    }, metrics);
+  });
 });

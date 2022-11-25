@@ -48,6 +48,9 @@ module.exports = (config, DNSResolver = Resolver) => {
     };
     const getDurationInMs = measureDurationInMs();
     const resolver = new DNSResolver();
+    if (config.root?.dns_resolvers) { // optionally overwriting system dns server
+      resolver.setServers(config.root.dns_resolvers);
+    }
     resolver.resolveAny(config.host, (err, rawAddresses) => {
       const duration = getDurationInMs();
       let result;

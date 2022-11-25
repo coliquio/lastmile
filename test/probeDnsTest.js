@@ -1,5 +1,6 @@
 const assert = require('assert');
 const probeDns = require('../src/probeDns');
+const probeStatus = require('../src/probeStatus');
 
 describe('probeDns', () => {
   it('returns metrics', async () => {
@@ -11,7 +12,7 @@ describe('probeDns', () => {
     delete metrics.duration;
     delete metrics.res_addresses;
     assert.deepEqual({
-      probe_status: 0
+      probe_status: probeStatus.ok,
     }, metrics);
   });
 
@@ -25,7 +26,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 0,
+      probe_status: probeStatus.ok,
       res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
   });
@@ -40,7 +41,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 1,
+      probe_status: probeStatus.failedExpectation,
       probe_failed_expectations: 'ADDRESS',
       res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
@@ -54,7 +55,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 2,
+      probe_status: probeStatus.error,
       err_code: 'ESERVFAIL'
     }, metrics);
   });
@@ -69,7 +70,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 0,
+      probe_status: probeStatus.ok,
       err_code: 'ESERVFAIL'
     }, metrics);
   });
@@ -84,7 +85,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 1,
+      probe_status: probeStatus.failedExpectation,
       err_code: 'ESERVFAIL',
       probe_failed_expectations: 'ERR_CODE'
     }, metrics);
@@ -100,7 +101,7 @@ describe('probeDns', () => {
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 1,
+      probe_status: probeStatus.failedExpectation,
       probe_failed_expectations: 'ERR_CODE',
       res_addresses: 's3-website.eu-central-1.amazonaws.com'
     }, metrics);
@@ -128,9 +129,42 @@ describe('probeDns', () => {
     assert(metrics.duration >= 500, `duration >= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
-      probe_status: 2,
+      probe_status: probeStatus.error,
       err_code: 'TIMEOUT'
     }, metrics);
     assert.deepEqual(ResolverMock.cancelled, true);
+  });
+
+  it('returns metrics for broken custom dns_resolver ENODATA', async () => {
+    const metrics = await probeDns({
+      host: 'example.s3-website.eu-central-1.amazonaws.com',
+      expect: {},
+      root: {
+        dns_resolvers: ['127.0.0.123'] // should not have local resolver
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    delete metrics.res_addresses;
+    assert.deepEqual({
+      err_code: 'ENODATA',
+      probe_status: probeStatus.error
+    }, metrics);
+  });
+
+  it('returns metrics for custom dns_resolver', async () => {
+    const metrics = await probeDns({
+      host: 'www.example.com',
+      expect: {},
+      root: {
+        dns_resolvers: ['8.8.8.8'] // google resolves any
+      }
+    });
+    assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
+    delete metrics.duration;
+    delete metrics.res_addresses;
+    assert.deepEqual({
+      probe_status: probeStatus.ok
+    }, metrics);
   });
 });
