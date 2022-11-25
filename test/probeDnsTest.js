@@ -47,7 +47,7 @@ describe('probeDns', () => {
     }, metrics);
   });
 
-  it('returns metrics for ESERVFAIL', async () => {
+  it('returns metrics for ENOTFOUND', async () => {
     const metrics = await probeDns({
       host: 'this-does-not-exist',
       expect: {}
@@ -56,7 +56,7 @@ describe('probeDns', () => {
     delete metrics.duration;
     assert.deepEqual({
       probe_status: probeStatus.error,
-      err_code: 'ESERVFAIL'
+      err_code: 'ENOTFOUND'
     }, metrics);
   });
 
@@ -64,14 +64,14 @@ describe('probeDns', () => {
     const metrics = await probeDns({
       host: 'this-does-not-exist',
       expect: {
-        err_code: 'ESERVFAIL'
+        err_code: 'ENOTFOUND'
       }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
     assert.deepEqual({
       probe_status: probeStatus.ok,
-      err_code: 'ESERVFAIL'
+      err_code: 'ENOTFOUND'
     }, metrics);
   });
 
@@ -86,7 +86,7 @@ describe('probeDns', () => {
     delete metrics.duration;
     assert.deepEqual({
       probe_status: probeStatus.failedExpectation,
-      err_code: 'ESERVFAIL',
+      err_code: 'ENOTFOUND',
       probe_failed_expectations: 'ERR_CODE'
     }, metrics);
   });
@@ -95,7 +95,7 @@ describe('probeDns', () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
       expect: {
-        err_code: 'ESERVFAIL'
+        err_code: 'ENOTFOUND'
       }
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);

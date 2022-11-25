@@ -52,6 +52,11 @@ module.exports = (config, DNSResolver = Resolver) => {
       resolver.setServers(config.root.dns_resolvers);
     }
     resolver.resolveAny(config.host, (err, rawAddresses) => {
+      // change macOS to linux err code for predicability / compatibility
+      if (err && err.code === 'ESERVFAIL') {
+        err.code = 'ENOTFOUND'
+      }
+
       const duration = getDurationInMs();
       let result;
       if (timedOut) {
