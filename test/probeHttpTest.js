@@ -85,7 +85,7 @@ describe('probeHttp', () => {
   it('returns metrics for refused port', async () => {
     const metrics = await probeHttp({
       host: 'localhost',
-      port: 60000,
+      port: 59999,
       path: '/',
       expect: {
         err_code: 'ECONNREFUSED'
@@ -102,7 +102,7 @@ describe('probeHttp', () => {
   it('returns metrics for failed expecation of timeout but instead refused port', async () => {
     const metrics = await probeHttp({
       host: 'localhost',
-      port: 60000,
+      port: 59999,
       path: '/',
       expect: {
         err_code: 'TIMEOUT'
@@ -119,7 +119,7 @@ describe('probeHttp', () => {
   it('returns metrics for error of successful response but instead refused port', async () => {
     const metrics = await probeHttp({
       host: 'localhost',
-      port: 60000,
+      port: 59999,
       path: '/',
       expect: {
         status_code: '200'
