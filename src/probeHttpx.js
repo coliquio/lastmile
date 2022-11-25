@@ -41,12 +41,12 @@ module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
   if (typeof config.auth === 'object' && typeof config.auth.username === 'string' && typeof config.auth.password === 'string') {
     options.auth = `${config.auth.username}:${config.auth.password}`;
   }
-  if (config.root?.dns_resolvers) {
+  if (config.dns_resolvers) {
     options.lookup = (hostname, _options_or_callback, _undefined_or_callback) => {
       // determine callback, because 2nd argument is optional
       const callback = _undefined_or_callback ?? _options_or_callback
       const resolver = new DNSResolver();
-      resolver.setServers(config.root.dns_resolvers);
+      resolver.setServers(config.dns_resolvers);
       resolver.resolve4(config.host, (err, addresses) => {
         if (err) {
           callback(err)

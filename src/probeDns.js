@@ -48,8 +48,8 @@ module.exports = (config, DNSResolver = Resolver) => {
     };
     const getDurationInMs = measureDurationInMs();
     const resolver = new DNSResolver();
-    if (config.root?.dns_resolvers) { // optionally overwriting system dns server
-      resolver.setServers(config.root.dns_resolvers);
+    if (config.dns_resolvers) { // optionally overwriting system dns server
+      resolver.setServers(config.dns_resolvers);
     }
     resolver.resolveAny(config.host, (err, rawAddresses) => {
       // change macOS to linux err code for predicability / compatibility

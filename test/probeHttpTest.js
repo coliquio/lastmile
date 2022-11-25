@@ -159,9 +159,7 @@ describe('probeHttp', () => {
       expect: {
         status_code: 200
       },
-      root: {
-        dns_resolvers: ['8.8.8.8']
-      }
+      dns_resolvers: ['8.8.8.8']
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;

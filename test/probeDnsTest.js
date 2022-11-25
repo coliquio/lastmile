@@ -139,9 +139,7 @@ describe('probeDns', () => {
     const metrics = await probeDns({
       host: 'example.s3-website.eu-central-1.amazonaws.com',
       expect: {},
-      root: {
-        dns_resolvers: ['127.0.0.123'] // should not have local resolver
-      }
+      dns_resolvers: ['127.0.0.123'] // should not have local resolver
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
@@ -156,9 +154,7 @@ describe('probeDns', () => {
     const metrics = await probeDns({
       host: 'www.example.com',
       expect: {},
-      root: {
-        dns_resolvers: ['8.8.8.8'] // google resolves any
-      }
+      dns_resolvers: ['8.8.8.8'] // google resolves any
     });
     assert(metrics.duration <= 500, `duration <= 500, but was ${metrics.duration}`);
     delete metrics.duration;
