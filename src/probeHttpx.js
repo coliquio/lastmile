@@ -44,17 +44,17 @@ module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
   if (config.dns_resolvers) {
     options.lookup = (hostname, _options_or_callback, _undefined_or_callback) => {
       // determine callback, because 2nd argument is optional
-      const callback = _undefined_or_callback ?? _options_or_callback
+      const callback = _undefined_or_callback || _options_or_callback;
       const resolver = new DNSResolver();
       resolver.setServers(config.dns_resolvers);
       resolver.resolve4(config.host, (err, addresses) => {
         if (err) {
-          callback(err)
+          callback(err);
         } else {
-          callback(undefined, addresses[0], 4)
+          callback(undefined, addresses[0], 4);
         }
-      })
-    }
+      });
+    };
   }
   return new Promise((resolvePromise) => {
     let result = {};

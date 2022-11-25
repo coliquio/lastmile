@@ -14,7 +14,7 @@ process.on('SIGINT', function() {
 async function main() {
   const firstRun = run(config);
   if (config.probeOneShot) {
-    const metrics = await firstRun
+    const metrics = await firstRun;
     const {status, exitCode} = evaluateMetrics(metrics);
     console.log(`Probes finished with status = ${status} (${exitCode})`);
     process.exit(exitCode);
@@ -24,4 +24,4 @@ async function main() {
     }, config.probeInterval);
   }
 }
-main()
+main();

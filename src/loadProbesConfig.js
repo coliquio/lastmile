@@ -23,7 +23,7 @@ const loadConfig = async (url) => {
 };
 
 const parseConfig = (configJson) => {
-  return configJson.map(cfg => parseProbeConfig(cfg))
+  return configJson.map(cfg => parseProbeConfig(cfg));
 };
 
 const enrichConfig = (probesConfigs, defaultConfig) => {
