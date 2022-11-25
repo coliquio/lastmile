@@ -1,3 +1,7 @@
+# 1.2.0
+
+TODO
+
 # 1.1.0
 
 - Use not-existing port 59999 instead of 60000 to test `ECONNREFUSED`
