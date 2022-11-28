@@ -15,6 +15,9 @@ module.exports = (cfg) => {
   if (cfg.probe_env) {
     result.probe_env = cfg.probe_env;
   }
+  if (cfg.dns_resolvers) {
+    result.dns_resolvers = result.dns_resolvers;
+  }
   if (typeof cfg.url === 'string') {
     const url = new URL(cfg.url);
     const type = url.protocol.split(':')[0];
