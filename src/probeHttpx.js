@@ -25,9 +25,9 @@ const matchHttpErrorExpectation = (config, error) => {
 
 module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
   const getDurationInMs = measureDurationInMs();
-  const httpAgentOptions = {}
+  const httpAgentOptions = {};
   if (typeof config.tls === 'object' && typeof config.tls.ca === 'string') {
-    httpAgentOptions.ca = config.tls.ca
+    httpAgentOptions.ca = config.tls.ca;
   }
   if (config.dns_resolvers) {
     httpAgentOptions.lookup = (hostname, _options_or_callback, _undefined_or_callback) => {
