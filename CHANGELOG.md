@@ -3,6 +3,7 @@
 - [CRITICAL] Probe runner (broken since 1.1.0)
 - [MINOR] Push invalid probe metrics
 - [MINOR] Error logging output
+- [CHANGE] Metrics logging now shows message `Collected #n metrics`
 
 # 1.1.0 (broken version)
 

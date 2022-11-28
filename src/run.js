@@ -17,7 +17,10 @@ module.exports = async (config, modules = {
     });
     if (config.probeOneShot && config.log) process.stdout.write('\n[DONE]\n');
     const enrichedMetrics = modules.enrichMetrics(metrics, probesConfig);
-    if (config.log) console.log(JSON.stringify(enrichedMetrics));
+    if (config.log) console.log(JSON.stringify({
+      message: `Collected ${enrichMetrics.length} metrics`,
+      metrics: enrichedMetrics
+    }));
     if (!config.pushgatewayDisabled) {
       try {
         await modules.pushMetrics({
