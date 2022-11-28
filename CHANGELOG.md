@@ -1,8 +1,10 @@
 # 1.1.1
 
-- [FIX] Error logging output
+- [CRITICAL] Probe runner (broken since 1.1.0)
+- [MINOR] Push invalid probe metrics
+- [MINOR] Error logging output
 
-# 1.1.0
+# 1.1.0 (broken version)
 
 - Use not-existing port 59999 instead of 60000 to test `ECONNREFUSED`
 - [CHANGE] Upgrade from node.js v13 to v16

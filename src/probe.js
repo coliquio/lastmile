@@ -5,7 +5,7 @@ const probeInvalid = require('./probeInvalid');
 
 module.exports = (probeConfig) => {
   let result;
-  switch (probeConfig.typ) {
+  switch (probeConfig.type) {
   case 'http':
     result = probeHttp(probeConfig);
     break;
