@@ -38,6 +38,10 @@ module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
       resolver.resolve4(config.host, (err, addresses) => {
         if (err) {
           callback(err);
+        } else if (addresses.length === 0) {
+          const error = new Error('Could not resolve host');
+          error.code = 'ERESOLVE';
+          callback(error);
         } else {
           callback(undefined, addresses[0], 4);
         }
