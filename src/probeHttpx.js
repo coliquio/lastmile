@@ -25,24 +25,12 @@ const matchHttpErrorExpectation = (config, error) => {
 
 module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
   const getDurationInMs = measureDurationInMs();
-  const options = {
-    host: config.host,
-    port: config.port,
-    path: config.path,
-    method: config.method || 'GET',
-    headers: {}
-  };
-  if (config.userAgent) options.headers['user-agent'] = config.userAgent;
+  const httpAgentOptions = {}
   if (typeof config.tls === 'object' && typeof config.tls.ca === 'string') {
-    options.agent = new httpOrHttps.Agent({
-      ca: config.tls.ca
-    });
-  }
-  if (typeof config.auth === 'object' && typeof config.auth.username === 'string' && typeof config.auth.password === 'string') {
-    options.auth = `${config.auth.username}:${config.auth.password}`;
+    httpAgentOptions.ca = config.tls.ca
   }
   if (config.dns_resolvers) {
-    options.lookup = (hostname, _options_or_callback, _undefined_or_callback) => {
+    httpAgentOptions.lookup = (hostname, _options_or_callback, _undefined_or_callback) => {
       // determine callback, because 2nd argument is optional
       const callback = _undefined_or_callback || _options_or_callback;
       const resolver = new DNSResolver();
@@ -55,6 +43,18 @@ module.exports = httpOrHttps => (config, DNSResolver = Resolver) => {
         }
       });
     };
+  }
+  const options = {
+    agent: new httpOrHttps.Agent(httpAgentOptions),
+    host: config.host,
+    port: config.port,
+    path: config.path,
+    method: config.method || 'GET',
+    headers: {}
+  };
+  if (config.userAgent) options.headers['user-agent'] = config.userAgent;
+  if (typeof config.auth === 'object' && typeof config.auth.username === 'string' && typeof config.auth.password === 'string') {
+    options.auth = `${config.auth.username}:${config.auth.password}`;
   }
   return new Promise((resolvePromise) => {
     let result = {};
