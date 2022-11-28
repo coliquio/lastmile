@@ -32,7 +32,10 @@ module.exports = async (config, modules = {
         console.log(JSON.stringify({
           priority: 'error',
           message: 'ERROR could not publish metrics',
-          error: e
+          error: {
+            message: e.message,
+            stack: e.stack
+          }
         }));
       }
     }
@@ -40,7 +43,10 @@ module.exports = async (config, modules = {
   } catch (e) {
     console.log(JSON.stringify({
       priority: 'error',
-      error: e
+      error: {
+        message: e.message,
+        stack: e.stack
+      }
     }));
   }
 };

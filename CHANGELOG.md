@@ -1,3 +1,7 @@
+# 1.1.1
+
+- [FIX] Error logging output
+
 # 1.1.0
 
 - Use not-existing port 59999 instead of 60000 to test `ECONNREFUSED`
