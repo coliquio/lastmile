@@ -10,6 +10,7 @@ module.exports = async (config, modules = {
   enrichMetrics
 }) => {
   try {
+    console.log(`Using config ${config.probesConfigUrl}`)
     const probesConfig = await modules.loadProbesConfig(config.probesConfigUrl, {userAgent: config.userAgent});
     if (config.probeOneShot && config.log) process.stdout.write('[RUN]\n');
     const metrics = await modules.probeAll(probesConfig, () => {
