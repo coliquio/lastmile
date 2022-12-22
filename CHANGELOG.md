@@ -1,3 +1,7 @@
+# 1.2.0
+
+- [CHANGE] Require to use `record_type` setting (`A`, `CNAME`, `ANY`, ...) for DNS resolution. See https://nodejs.org/docs/latest-v16.x/api/dns.html#dnsresolvehostname-rrtype-callback
+
 # 1.1.2
 
 - [MINOR] Fix adding missing `dns_resolvers` to prometheus. Show in prometheus as label `dns_resolvers="1.1.1.1,4.4.4.4"`.

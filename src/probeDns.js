@@ -23,9 +23,8 @@ function buildProbeResultForError(expect, err) {
   return result;
 }
 
-function buildProbeResultForResolvedAddresses(expect, rawAddresses) {
+function buildProbeResultForResolvedAddresses(expect, addresses) {
   const result = {};
-  const addresses = rawAddresses.map(a => a.value || a.address);
   result.res_addresses = addresses.join(',');
   if (expect.address && addresses.indexOf(expect.address) < 0) {
     result.probe_status = probeStatus.failedExpectation;
@@ -51,7 +50,7 @@ module.exports = (config, DNSResolver = Resolver) => {
     if (config.dns_resolvers) { // optionally overwriting system dns server
       resolver.setServers(config.dns_resolvers);
     }
-    resolver.resolveAny(config.host, (err, rawAddresses) => {
+    resolver.resolve(config.host, config.record_type, (err, rawAddresses) => {
       // change macOS to linux err code for predicability / compatibility
       if (err) {
         if (err.code === 'ESERVFAIL') err.code = 'ENOTFOUND';
