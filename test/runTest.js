@@ -12,7 +12,7 @@ describe('run', () => {
     const mockModules = {
       loadProbesConfig: (url, defaultConfig) => {
         mockModulesResults.loadProbesConfig.url = url;
-        return [{url: 'http://example.com', userAgent: defaultConfig.userAgent}];
+        return [{url: 'http://example.com', userAgent: defaultConfig.userAgent, dns_resolvers: ['8.8.8.8']}];
       },
       probeAll: (probesConfig, onProgress) => {
         mockModulesResults.probeAll.probesConfig = probesConfig;
@@ -20,9 +20,7 @@ describe('run', () => {
         return [{res_code: 200}];
       },
       enrichMetrics: (metrics, probeConfig) => {
-        mockModulesResults.enrichMetrics.metrics = metrics;
-        mockModulesResults.enrichMetrics.probeConfig = probeConfig;
-        return [{enriched: true}];
+        return [{enriched: true, metrics, probeConfig}];
       },
       pushMetrics: (config, metrics) => {
         mockModulesResults.pushMetrics.config = config;
@@ -36,11 +34,13 @@ describe('run', () => {
       fakeTime: 1337
     }, mockModules);
     assert.deepEqual('file://./probe_config.json', mockModulesResults.loadProbesConfig.url);
-    assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent'}], mockModulesResults.probeAll.probesConfig);
+    assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent', dns_resolvers: ['8.8.8.8']}], mockModulesResults.probeAll.probesConfig);
     assert.deepEqual('function', typeof mockModulesResults.probeAll.onProgress);
-    assert.deepEqual([{res_code: 200}], mockModulesResults.enrichMetrics.metrics);
-    assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent'}], mockModulesResults.enrichMetrics.probeConfig);
-    assert.deepEqual([{enriched: true}], result);
+    assert.deepEqual([{
+      enriched: true,
+      metrics: [{res_code: 200}],
+      probeConfig: [{url: 'http://example.com', userAgent: 'test-user-agent', dns_resolvers: ['8.8.8.8']}]
+    }], result);
     assert.deepEqual({
       url: undefined,
       auth: undefined,
@@ -49,6 +49,6 @@ describe('run', () => {
       instance_address: undefined,
       timestamp: 1337
     }, mockModulesResults.pushMetrics.config);
-    assert.deepEqual([{enriched: true}], mockModulesResults.pushMetrics.metrics);
+    assert.deepEqual(result, mockModulesResults.pushMetrics.metrics);
   });
 });

@@ -16,7 +16,8 @@ describe('enrichMetrics', () => {
       req_host: 'host',
       req_port: 'port',
       req_path: 'path',
-      probe_env: 'probe-env'
+      probe_env: 'probe-env',
+      dns_resolvers: ['8.8.8.8']
     }], enrichMetrics([{
       socket_dst_family: 'socket_dst_family',
       socket_dst_address: 'socket_dst_address',
@@ -31,7 +32,8 @@ describe('enrichMetrics', () => {
       host: 'host',
       port: 'port',
       path: 'path',
-      probe_env: 'probe-env'
+      probe_env: 'probe-env',
+      dns_resolvers: ['8.8.8.8']
     }]));
   });
 });
