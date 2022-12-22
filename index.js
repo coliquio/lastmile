@@ -1,6 +1,8 @@
 const config = require('./src/config')();
 const run = require('./src/run');
 const evaluateMetrics = require('./src/evaluateMetrics');
+const fs = require('fs');
+const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 
 process.on('exit', function() {
   console.log('Stopping worker');
@@ -12,6 +14,7 @@ process.on('SIGINT', function() {
 });
 
 async function main() {
+  console.log(`✅ Running lastmile v${packageJson.version}`)
   const firstRun = run(config);
   if (config.probeOneShot) {
     const metrics = await firstRun;
