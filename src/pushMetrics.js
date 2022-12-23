@@ -6,7 +6,7 @@ const instanceLabelNames = [
   'lastmile_version'
 ];
 
-const probeLabelNames = [,
+const probeLabelNames = [
   'lastmile_version',
   'protocol',
   'req_url',
