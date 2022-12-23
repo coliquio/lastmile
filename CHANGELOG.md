@@ -1,3 +1,7 @@
+# 1.2.2
+
+- [ADD] Attach `lastmile_version` as label to prometheus metric
+
 # 1.2.1
 
 - [ADD] Attach `record_type` as label (`A`, `CNAME`, `ANY`, ...) to prometheus metric

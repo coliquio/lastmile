@@ -13,6 +13,8 @@ process.on('SIGINT', function() {
   process.exit(1);
 });
 
+config.__version = packageJson.version
+
 async function main() {
   console.log(`✅ Running lastmile v${packageJson.version}`)
   const firstRun = run(config);

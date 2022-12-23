@@ -1,6 +1,6 @@
 #!/bin/bash
 MAJOR=1.2
-MINOR=1
+MINOR=2
 STABLE_VERSION="${MAJOR}-stable"
 FULL_VERSION="${MAJOR}.${MINOR}"
 

@@ -2,10 +2,12 @@ const promClient = require('prom-client');
 
 const instanceLabelNames = [
   'instance',
-  'instance_address'
+  'instance_address',
+  'lastmile_version'
 ];
 
-const probeLabelNames = [
+const probeLabelNames = [,
+  'lastmile_version',
   'protocol',
   'req_url',
   'req_host',
@@ -49,7 +51,8 @@ const lastSeen = new promClient.Counter({
 module.exports = (config, metrics) => {
   return new Promise((resolve, reject) => {
     const instanceLabels = {
-      instance: config.instance
+      instance: config.instance,
+      lastmile_version: config.lastmile_version
     };
     if (config.instance_address) instanceLabels.instance_address = config.instance_address;
     lastSeen.inc(instanceLabels, config.timestamp);

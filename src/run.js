@@ -19,7 +19,7 @@ module.exports = async (config, modules = {
     if (config.probeOneShot && config.log) process.stdout.write('\n[DONE]\n');
     const enrichedMetrics = modules.enrichMetrics(metrics, probesConfig);
     if (config.log) console.log(JSON.stringify({
-      message: `Collected ${enrichedMetrics.length} metrics`,
+      message: `Collected ${enrichedMetrics.length} metrics (lastmile=${config.__version})`,
       metrics: enrichedMetrics
     }));
     if (!config.pushgatewayDisabled) {
@@ -30,7 +30,8 @@ module.exports = async (config, modules = {
           environment: config.environment,
           instance: config.instanceName,
           instance_address: config.instanceAddress,
-          timestamp: config.fakeTime || (new Date()).getTime()
+          timestamp: config.fakeTime || (new Date()).getTime(),
+          lastmile_version: config.__version
         }, enrichedMetrics);
       } catch (e) {
         console.log(JSON.stringify({

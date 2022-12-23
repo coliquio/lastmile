@@ -31,7 +31,8 @@ describe('run', () => {
     const result = await run({
       probesConfigUrl: 'file://./probe_config.json',
       userAgent: 'test-user-agent',
-      fakeTime: 1337
+      fakeTime: 1337,
+      __version: 'x.x.x'
     }, mockModules);
     assert.deepEqual('file://./probe_config.json', mockModulesResults.loadProbesConfig.url);
     assert.deepEqual([{url: 'http://example.com', userAgent: 'test-user-agent', dns_resolvers: ['8.8.8.8']}], mockModulesResults.probeAll.probesConfig);
@@ -47,6 +48,7 @@ describe('run', () => {
       environment: undefined,
       instance: undefined,
       instance_address: undefined,
+      lastmile_version: 'x.x.x',
       timestamp: 1337
     }, mockModulesResults.pushMetrics.config);
     assert.deepEqual(result, mockModulesResults.pushMetrics.metrics);
