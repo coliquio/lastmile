@@ -1,3 +1,7 @@
+# 1.2.1
+
+- [ADD] Attach `record_type` as label (`A`, `CNAME`, `ANY`, ...) to prometheus metric
+
 # 1.2.0
 
 - [CHANGE] Require to use `record_type` setting (`A`, `CNAME`, `ANY`, ...) for DNS resolution. See https://nodejs.org/docs/latest-v16.x/api/dns.html#dnsresolvehostname-rrtype-callback

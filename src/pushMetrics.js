@@ -25,6 +25,7 @@ const probeLabelNames = [
   'socket_dst_family',
   'socket_dst_address',
   'dns_resolvers',
+  'record_type',
   'probe_name',
   'res_status',
   'err_code',

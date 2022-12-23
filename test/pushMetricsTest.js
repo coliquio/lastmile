@@ -77,6 +77,7 @@ describe('pushMetrics', () => {
         probe_status: 0,
         duration: 140,
         res_addresses: '127.0.0.1,127.0.0.2',
+        record_type: 'A',
         probe_env: 'producation'
       }
     ]);
@@ -87,13 +88,13 @@ describe('pushMetrics', () => {
 # TYPE lastmile_probe_duration_milliseconds gauge
 lastmile_probe_duration_milliseconds{probe_status="1",instance="hostname_i1",instance_address="192.0.0.3",probe_id="probeid",probe_failed_expectations="F1,F2",probe_env="development",err_code="ERR_FOO"} 1337
 lastmile_probe_duration_milliseconds{probe_status="0",instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",probe_id="https://example.com/foo",probe_env="producation",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",dns_resolvers="8.8.8.8,9.9.9.9",probe_name="custom-dns",res_status="200"} 140
-lastmile_probe_duration_milliseconds{probe_status="0",instance="hostname_i1",instance_address="192.0.0.3",protocol="dns",res_addresses="127.0.0.1,127.0.0.2",probe_env="producation"} 140
+lastmile_probe_duration_milliseconds{probe_status="0",instance="hostname_i1",instance_address="192.0.0.3",protocol="dns",res_addresses="127.0.0.1,127.0.0.2",probe_env="producation",record_type="A"} 140
 
 # HELP lastmile_probe_status probe status (0=ok, 1=error)
 # TYPE lastmile_probe_status gauge
 lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",probe_id="probeid",probe_failed_expectations="F1,F2",probe_env="development",err_code="ERR_FOO"} 1
 lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="https",req_url="https://example.com/foo",req_host="example.com",req_port="443",req_path="/foo",req_method="GET",probe_id="https://example.com/foo",probe_env="producation",socket_tls_protocol="TLSv3",socket_src_address="172.0.0.3",socket_dst_family="IPv4",socket_dst_address="52.0.0.3",dns_resolvers="8.8.8.8,9.9.9.9",probe_name="custom-dns",res_status="200"} 0
-lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="dns",res_addresses="127.0.0.1,127.0.0.2",probe_env="producation"} 0
+lastmile_probe_status{instance="hostname_i1",instance_address="192.0.0.3",protocol="dns",res_addresses="127.0.0.1,127.0.0.2",probe_env="producation",record_type="A"} 0
 
 # HELP lastmile_last_seen timestamp
 # TYPE lastmile_last_seen counter
